@@ -91,7 +91,7 @@ public class Game {
 	
 	public static void main(String [] args) throws IOException{
 		Game game = new Game();
-		game.setUpWorld("/Users/Adam/Documents/University/Year2/Term2/SE/IntelligAnts/IntelligAnts/src/1.world.txt");
+		game.setUpWorld("/Users/Adam/Documents/University/Year2/Term2/SE/IntelligAnts/IntelligAnts/src/1.world");
 		game.printGame();
 		game.testMoveAnt();
 		
