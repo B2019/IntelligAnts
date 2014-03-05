@@ -14,14 +14,16 @@ public class Cell {
 	Boolean[] redMarkers;
 	//an array from 0-5 for black team markers
 	Boolean[] blackMarkers;
+	int cellID;
 	
-	public Cell(Boolean passable, int numOfFood, int anthill){
+	public Cell(Boolean passable, int numOfFood, int anthill, int cellID){
 		//initialise variables and set up food objects in the food array.
 		this.passable = passable;
 		food = new ArrayList<Food>();
 		initFood(numOfFood);
 		this.antHill = anthill;
 		redMarkers = new Boolean[6];
+		this.cellID = cellID;
 		blackMarkers = new Boolean[6];
 	}
 	
@@ -31,5 +33,52 @@ public class Cell {
 			food.add(new Food());
 		}
 	}
+	
+	public void setAnt(Ant ant){
+		this.ant = ant;
+	}
+	
+	
+	public String toString(){
+		if(ant != null){
+			if(ant.getTeamID() == 1){
+				return "R";
+			} else {
+				return "B";
+			}		
+		} else
+		if (passable == false){
+			return "#";
+		} else 
+		if (food.isEmpty() == false){
+			return "" + food.size();
+		} else 
+		if (antHill == 1){
+			return "+";
+		} else
+		if (antHill == 2){
+			return "-";
+		} else {
+			return ".";
+		}
+		
+	}
+
+	public int getCellID() {
+		return cellID;
+	}
+	
+	public Boolean isPassable(){
+		if(passable == false){
+			return false;
+		} else
+		if(ant != null){
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	
 	
 }
