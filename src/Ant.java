@@ -1,21 +1,25 @@
+/* Ant.java
+ * Dumb ant object 
+ * v0.0.4 - 6/3/14 
+ *
+ * intelligAnts
+ * Adam Pearce and Francis Poole
+ * 5/3/14
+ */
+
 public class Ant {
 
-	//whether the ant is alive or not
-	Boolean alive;
-	//the id of the ant
-	int antID;
-	//the team id of the ant.
-	int teamID;
-	//the direction of the ant (0-5)
-	int direction;
-	//the cooldown of the ant from its last move action/
-	int cooldown;
-	//the Food object the ant is carrying
-	Food food;
-	//need to add current instruction
-	//current cell ant is in. 
-	Cell cell;
+	Boolean alive; //whether the ant is alive or not
+	int antID; //the id of the ant
+	int teamID; //the team id of the ant.
+	int direction; //the direction of the ant (0-5)
+	int cooldown; //the cooldown of the ant from its last move action
+	Food food; //the Food object the ant is carrying
+	Cell cell; //current cell ant is in. 
 	
+	//need to add current instruction
+	
+	//Constructor
 	public Ant(int antID, int teamID, Cell cell){
 		//initialise variables 
 		alive = true;
@@ -27,18 +31,27 @@ public class Ant {
 		this.cell = cell;
 	}
 	
+	//Getters and Setters
+	//Alive
+	public boolean getAlive() {
+		return alive;
+	}
+	
+	public void kill() {
+		alive = false;
+	}
+	
+	//AntID
+	public int getAntID() {
+		return antID;
+	}
+
+	//TeamID
 	public int getTeamID(){
 		return teamID;
 	}
 	
-	public Cell getCell(){
-		return cell;
-	}
-	
-	public void setCell(Cell cell){
-		this.cell = cell;
-	}
-	
+	//Direction
 	public int getDirection() {
 		return direction;
 	}
@@ -47,17 +60,38 @@ public class Ant {
 		this.direction = direction;
 	}
 	
-	public void setFood(Food food) {
-		this.food = food;
+	//Cooldown
+	public int getCooldown() {
+		return cooldown;
 	}
 
+	public void setCooldown(int cooldown) {
+		this.cooldown = cooldown;
+	}
+
+	//Food
 	public Food getFood() {
 		return food;
 	}
 	
+	public void setFood(Food food) {
+		this.food = food;
+	}
+	
+	//Cell
+	public Cell getCell(){
+		return cell;
+	}
+	
+	public void setCell(Cell cell){
+		this.cell = cell;
+	}
+
 	public String toString(){
 		return "" + antID;
 	}
+
+
 
 
 	

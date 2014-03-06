@@ -1,8 +1,15 @@
+/* Cell.java
+ * Dumb cell object 
+ * v0.0.4 - 6/3/14 
+ *
+ * intelligAnts
+ * Adam Pearce and Francis Poole
+ * 5/3/14
+ */
+
 import java.util.ArrayList;
 
 public class Cell {
-
-	
 	boolean passable; //rocky or not
 	ArrayList<Food> food; //array and thus number of food in the cell.
 	Ant ant; //the ant that is in the cell.

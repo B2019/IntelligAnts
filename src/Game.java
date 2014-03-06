@@ -1,8 +1,15 @@
+/* Game.java
+ * Game controller. Handles game actions and creation.
+ * v0.0.4 - 6/3/14 
+ *
+ * intelligAnts
+ * Adam Pearce and Francis Poole
+ * 5/3/14
+ */
+
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
 
 public class Game {
 	Ant[] ants; //array of all ants in the game.
@@ -47,7 +54,7 @@ public class Game {
 			case '.': 
 				cell = new Cell(true, 0, 0, index);
 				break;
-			//Red ant hill (1)
+			//Red ant hill (team 1)
 			case '+': 
 				cell = new Cell(true, 0, 1, index);
 				Ant ant = new Ant(antIndex, 1, cell);
@@ -55,7 +62,7 @@ public class Game {
 				antIndex++;
 				cell.setAnt(ant);
 				break;
-			//Black ant hill (2)
+			//Black ant hill (team 2)
 			case '-': 
 				cell = new Cell(true, 0, 2, index);
 				Ant ant2 = new Ant(antIndex, 2, cell);
@@ -63,6 +70,7 @@ public class Game {
 				antIndex++;
 				cell.setAnt(ant2);
 				break;
+			//Food
 			case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
 				int digit = Character.getNumericValue(c);
 				cell = new Cell(true, digit, 0, index);
@@ -134,6 +142,10 @@ public class Game {
 		}
 	}
 	
+	public void turn(Ant ant, int dir) {
+		ant.setDirection(dir);
+	}
+	
 	public void mark(Ant ant, int markerNo) {
 		switch(ant.getTeamID()){
 		case 1:
@@ -157,7 +169,7 @@ public class Game {
 	}
 	
 	public void pickUp(Ant ant) {
-		if (ant.getFood() != null) { //Check ant doesn't already have food
+		if (ant.getFood() == null) { //Check ant doesn't already have food
 			ant.setFood(ant.getCell().removeFood()); //Removes food from cell and gives it to ant
 		}
 	}
@@ -172,6 +184,7 @@ public class Game {
 	public void sense(Ant ant, int direction, String cond, int markerNo) {
 		Cell neighbourCell = getNeighbourCell(ant.getCell(), ant.getDirection());
 		boolean result = false;
+		
 		if (cond.equals("friend")) {
 			result = (neighbourCell.getAnt().getTeamID() == ant.getTeamID());
 		} else if (cond.equals("foe")) { 
@@ -204,39 +217,62 @@ public class Game {
 			result = (neighbourCell.getAntHill() != ant.getTeamID() &&
 					neighbourCell.getAntHill() != 0);
 		}
+		System.out.println(result);
+	}
+	
+	public void combatCheck(Ant ant) {
+		int adjacentAnts = 0;
+		for (int i = 0; i < 5; i++) {
+			Ant ant2 = getNeighbourCell(ant.getCell(), i).getAnt();
+			if (ant2 != null && ant2.getTeamID() != ant.getTeamID()) {
+				adjacentAnts ++;
+			}
+		}
+		if (adjacentAnts >= 5) {
+			ant.kill();
+			for (int i = 0; i < 3; i++) {
+				ant.getCell().addFood(new Food());
+			}
+		}
+			
 	}
 	
 	public static void main(String [] args) throws IOException{
 		Game game = new Game();
 		game.printGame();
-		game.testMoveAnt();
+		game.test();
 		
 	}
 	
-
-
-	public void testMoveAnt(){
-		Ant testAnt = ants[6];
-		testAnt.setDirection(0);
-		move(testAnt);
-
+	public void test(){
+		Ant ant = ants[6];
+		move(ant);
+		move(ant);
+		move(ant);
+		move(ant);
+		move(ant);
+		move(ant);
+		move(ant);
+		move(ant);
+		move(ant);
+		move(ant);
+		turn(ant, 1);
+		move(ant);
+		move(ant);
+		move(ant);
+		sense(ant, 1, "food", 0);
+		move(ant);
+		sense(ant, 1, "food", 0);
+		move(ant);
+		pickUp(ant);
+		turn(ant, 4);
+		move(ant);
+		drop(ant);
+		move(ant);
 		printGame();
-		testAnt.setDirection(5);
-		move(testAnt);
-
-		printGame();
-		testAnt.setDirection(4);
-		move(testAnt);
-		printGame();
-		testAnt.setDirection(3);
-		move(testAnt);
-		printGame();
-		testAnt.setDirection(2);
-		move(testAnt);
-		printGame();
-		testAnt.setDirection(1);
-		move(testAnt);
-		printGame();
+		
+		
+		
 		
 	}
 }
