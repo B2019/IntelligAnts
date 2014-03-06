@@ -31,16 +31,12 @@ public class Ant {
 		return teamID;
 	}
 	
-	public String toString(){
-		return "" + antID;
+	public Cell getCell(){
+		return cell;
 	}
 	
 	public void setCell(Cell cell){
 		this.cell = cell;
-	}
-	
-	public Cell getCell(){
-		return cell;
 	}
 	
 	public int getDirection() {
@@ -50,6 +46,20 @@ public class Ant {
 	public void setDirection(int direction) {
 		this.direction = direction;
 	}
+	
+	public void setFood(Food food) {
+		this.food = food;
+	}
+
+	public Food getFood() {
+		return food;
+	}
+	
+	public String toString(){
+		return "" + antID;
+	}
+
+
 	
 	
 }
