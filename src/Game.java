@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 
 public class Game {
@@ -25,7 +26,7 @@ public class Game {
 	
 	//takes a filename/path, creates all the ant/cell objects for the game.
 	public void setUpWorld(String fileName) throws IOException{
-		BufferedReader in = new BufferedReader(new FileReader(fileName));
+		BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream (fileName)));
 		//get the dimensions from first two lines.
 		dimensionX = Integer.parseInt(in.readLine());
 		dimensionY = Integer.parseInt(in.readLine());
@@ -91,7 +92,7 @@ public class Game {
 	
 	public static void main(String [] args) throws IOException{
 		Game game = new Game();
-		game.setUpWorld("/Users/Adam/Documents/University/Year2/Term2/SE/IntelligAnts/IntelligAnts/src/1.world");
+		game.setUpWorld("1.world");
 		game.printGame();
 		game.testMoveAnt();
 		
