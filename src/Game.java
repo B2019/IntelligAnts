@@ -197,6 +197,7 @@ public class Game {
 					neighbourCell.getAnt().getFood() != null);
 		} else if (cond.equals("food")) {
 			result = (neighbourCell.getFoodSize() > 0);
+			
 		} else if (cond.equals("rock")) {
 			result = neighbourCell.isRocky();
 		} else if (cond.equals("marker")) {
@@ -262,7 +263,6 @@ public class Game {
 		move(ant);
 		sense(ant, 1, "food", 0);
 		move(ant);
-		sense(ant, 1, "food", 0);
 		move(ant);
 		pickUp(ant);
 		turn(ant, 4);
