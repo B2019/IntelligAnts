@@ -7,17 +7,22 @@ public class WorldGen {
 
 	int x;
 	int y;
-	String[] worldArray;
+	char[] worldArray;
 
 	public WorldGen(int x, int y) {
 		this.x = x;
 		this.y = y;
 		newWorld();
 		setUpPerim();
+		antHill(true);
+		antHill(false);
+		food();
+		rocks();
+		printWorld();
 	}
 
 	public void newWorld() {
-		worldArray = new String[x * y];
+		worldArray = new char[x * y];
 
 	}
 
@@ -40,34 +45,34 @@ public class WorldGen {
 	public void setUpPerim() {
 		int i = 0;
 		for (; i < x; i++) {
-			worldArray[i] = "#";
+			worldArray[i] = '#';
 		}
 		for (; i < ((x * y) - x); i++) {
 			if (i % x == 0) {
-				worldArray[i] = "#";
-				worldArray[i + 149] = "#";
+				worldArray[i] = '#';
+				worldArray[i + 149] = '#';
 			} else {
 				if (!(i % x == (x - 1))) {
-					worldArray[i] = ".";
+					worldArray[i] = '.';
 				}
 			}
 		}
 		for (; i < x * y; i++) {
-			worldArray[i] = "#";
+			worldArray[i] = '#';
 		}
 	}
 
 	
 	public void rocks(){
-		String s2 = ".";
+		char s2 = '.';
 		Random rand = new Random();
 		int indexMax = (x * y);
 		int index = rand.nextInt(indexMax);
 		int rocksPlaced = 0;
 		while (rocksPlaced < 14) {
 			
-			if(worldArray[index].equals(s2))	{
-				worldArray[index] = "#";
+			if(worldArray[index] == s2)	{
+				worldArray[index] = '#';
 				rocksPlaced++;
 
 			} else {
@@ -82,7 +87,7 @@ public class WorldGen {
 	
 	public void food(){
 		int foodSize = 5;
-		String s2 = ".";
+		char s2 = '.';
 		Random rand = new Random();
 		int indexMax = (x * y);
 		int index = rand.nextInt(indexMax);
@@ -96,7 +101,7 @@ public class WorldGen {
 					int botleftCorner = coordConv((coord[0] + 2), coord[1] + 4);
 					int botrightCorner = coordConv((coord[0] + 6), coord[1] + 4);
 					
-					if(!(worldArray[topleftCorner].equals(s2)) && !(worldArray[toprightCorner].equals(s2)) && !(worldArray[botleftCorner].equals(s2)) && !(worldArray[botrightCorner].equals(s2))){
+					if(worldArray[topleftCorner] != s2 && worldArray[toprightCorner] != s2 && worldArray[botleftCorner] != s2 && worldArray[botrightCorner] != s2){
 						happy = true;
 					}
 							
@@ -112,7 +117,7 @@ public class WorldGen {
 		for(int i = 0; i < 5; i++){
 			
 			for(int j = 0; j < 5; j++){
-				worldArray[index + j] = "5";
+				worldArray[index + j] = '5';
 				
 			}
 			if(newLine == true){
@@ -128,15 +133,15 @@ public class WorldGen {
 	}
 	
 	public void antHill(Boolean red) {
-		String s = "";
-		String s2 = "";
+		char s;
+		char s2;
 		if (red == true) {
-			s = "+";
-			s2 = "*";
+			s = '+';
+			s2 = '*';
 		} else {
 			// change to -
-			s = "*";
-			s2 = "+";
+			s = '*';
+			s2 = '+';
 		}
 		Random rand = new Random();
 		int indexMax = (x * y);
@@ -153,8 +158,8 @@ public class WorldGen {
 					int botleftCorner = coordConv((coord[0] + 3), coord[1] + 12);
 					int botrightCorner = coordConv((coord[0] + 10), coord[1] + 12);
 					
-					if(!(worldArray[topleftCorner].equals(s2)) && !(worldArray[toprightCorner].equals(s2)) && !(worldArray[midleftCorner].equals(s2)) && 
-							!(worldArray[midrightCorner].equals(s2)) && !(worldArray[botleftCorner].equals(s2)) && !(worldArray[botrightCorner].equals(s2))){
+					if(worldArray[topleftCorner] != s2 && worldArray[toprightCorner] != s2 && worldArray[midleftCorner] != s2 && 
+							worldArray[midrightCorner] != s2 && worldArray[botleftCorner] != s2 && worldArray[botrightCorner] != s2){
 						happy = true;
 					}
 							
@@ -235,10 +240,10 @@ public class WorldGen {
 
 	public static void main(String[] args) {
 		WorldGen test = new WorldGen(150, 150);
-		test.antHill(true);
-		test.antHill(false);
-		test.food();
-		test.rocks();
-		test.printWorld();
+		
+	}
+
+	public char[] getWorldArray() {
+		return worldArray;
 	}
 }

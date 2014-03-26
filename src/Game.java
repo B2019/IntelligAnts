@@ -6,7 +6,7 @@
  * Adam Pearce and Francis Poole
  * 5/3/14
  */
-
+import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,33 +19,87 @@ public class Game {
 	int tick; //current tick for the turn. (ant thats taking a go)
 	int dimensionX; //World X dimension
 	int dimensionY; //World Y dimension
+	int seed;
+	String accountAName;
+	String accountBName;
+	Brain accountABrain;
+	Brain accountBBrain;
 	
 	public Game(){
+		char[] worldArray = null;
 		ants = new Ant[254];
 		turn = 0;
 		tick = 0;
-		try {
-			setUpWorld("1.world");
-		} catch (Exception e) {
-			System.out.println("Error - File not found!");
-			System.out.println(e);
+		
+		Scanner in = new Scanner(System.in);
+		//Get account 1
+		System.out.println("Please type in player A's name:");
+		accountAName = in.nextLine();
+		//Choose account 1 brain WIP
+			//Load brain or create new brain
+		//Get account 2
+		System.out.println("Please type in player B's name:");
+		accountBName = in.nextLine();
+		//Choose account 2 brain WIP
+			//Load brain or create new brain
+		//Get seed
+		System.out.println("Please type in seed:");
+		this.seed = in.nextInt();
+		//Get world
+		System.out.println("Please choose if you would like to load an old world or create a new one:");
+		System.out.println("1: Load World");
+		System.out.println("2: Create New Random World");
+		int i = in.nextInt();
+		
+		if (i == 1) {
+			//Load World
+			System.out.println("Please type in your world file name:");
+			String fileName = in.nextLine();// CHANGE
+			try {
+				worldArray = loadWorld(fileName);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else if (i == 2) {
+			//Create random world
+			dimensionX = 150;
+			dimensionY = 150;
+			WorldGen worldGen = new WorldGen(dimensionX, dimensionY);
+			worldArray = worldGen.getWorldArray();
+			
 		}
+		System.out.println("test2");
+		
+		setUpWorld(worldArray);
 	}
 	
-	//takes a filename/path, creates all the ant/cell objects for the game.
-	public void setUpWorld(String fileName) throws IOException{
+	private char[] loadWorld(String fileName) throws IOException {
 		BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream (fileName)));
 		//get the dimensions from first two lines.
 		dimensionX = Integer.parseInt(in.readLine());
 		dimensionY = Integer.parseInt(in.readLine());
-		cells = new Cell[dimensionX*dimensionY];
+		char[] worldArray = new char[dimensionX * dimensionY];
+		
+		int c;
+		int i = 0;
+		while((c = in.read()) != -1) {
+			worldArray[i] = (char) c; 
+		}
+		return worldArray;
+	}
+
+	//takes a filename/path, creates all the ant/cell objects for the game.
+	public void setUpWorld(char[] worldArray){
+		
+		
+		cells = new Cell[worldArray.length];
 		int antIndex = 0;
 		int index = 0;
 		int c;
 		
-		while((c = in.read()) != -1){
+		for (int i = 0; i < worldArray.length; i++){
 			Cell cell = null;
-			switch((char) c){
+			switch(c = worldArray[i]){
 			//Rocky cell
 			case '#': 
 				cell = new Cell(false, 0, 0, index);
@@ -128,6 +182,29 @@ public class Game {
 		return null;
 	}
 	
+	//Random Int
+	public int randomInt(int n) {
+		//Increment seed
+		System.out.println();
+		System.out.println(seed);
+		seed = seed * 22695477 + 1;
+		System.out.println(seed);
+		seed = seed * 22695477 + 1;
+		System.out.println(seed);
+		seed = seed * 22695477 + 1;
+		System.out.println(seed);
+		seed = seed * 22695477 + 1;
+		System.out.println(seed);
+		seed = seed * 22695477 + 1;
+		System.out.println(seed);
+		int x = (seed / 65536) % n;
+		
+		System.out.println(x);
+		return x;
+	}
+	
+	//Any instructions
+	//Move
 	public Boolean move(Ant ant){
 		
 		Cell newCell = getNeighbourCell(ant.getCell(), ant.getDirection());
@@ -142,10 +219,12 @@ public class Game {
 		}
 	}
 	
+	//Turn
 	public void turn(Ant ant, int dir) {
 		ant.setDirection(dir);
 	}
 	
+	//Mark
 	public void mark(Ant ant, int markerNo) {
 		switch(ant.getTeamID()){
 		case 1:
@@ -157,6 +236,7 @@ public class Game {
 		}
 	}
 	
+	//Unmark
 	public void unmark(Ant ant, int markerNo) {
 		switch(ant.getTeamID()){
 		case 1:
@@ -168,12 +248,14 @@ public class Game {
 		}
 	}
 	
+	//Pickup
 	public void pickUp(Ant ant) {
 		if (ant.getFood() == null) { //Check ant doesn't already have food
 			ant.setFood(ant.getCell().removeFood()); //Removes food from cell and gives it to ant
 		}
 	}
 	
+	//Drop
 	public void drop(Ant ant) {
 		if (ant.getFood() != null) { //Check ant doesn't already have food
 			ant.getCell().addFood(ant.getFood()); //
@@ -181,6 +263,7 @@ public class Game {
 		}
 	}
 	
+	//Sense
 	public void sense(Ant ant, int direction, String cond, int markerNo) {
 		Cell neighbourCell = getNeighbourCell(ant.getCell(), ant.getDirection());
 		boolean result = false;
@@ -221,6 +304,7 @@ public class Game {
 		System.out.println(result);
 	}
 	
+	//Combat Check
 	public void combatCheck(Ant ant) {
 		int adjacentAnts = 0;
 		for (int i = 0; i < 5; i++) {
@@ -238,8 +322,21 @@ public class Game {
 			
 	}
 	
+	//Flip
+	public boolean flip(Ant ant, int n) {
+		return randomInt(n) == 0;
+	}
+	
 	public static void main(String [] args) throws IOException{
-		Game game = new Game();
+		int i = 0;
+		Game game = null;
+		Scanner in = new Scanner(System.in);
+		System.out.println("Press 1 to start game");
+		i = in.nextInt();
+		if (i == 1) {
+			//Create game
+			game = new Game();
+		}
 		game.printGame();
 		game.test();
 		
@@ -247,29 +344,30 @@ public class Game {
 	
 	public void test(){
 		Ant ant = ants[6];
-		move(ant);
-		move(ant);
-		move(ant);
-		move(ant);
-		move(ant);
-		move(ant);
-		move(ant);
-		move(ant);
-		move(ant);
-		move(ant);
-		turn(ant, 1);
-		move(ant);
-		move(ant);
-		move(ant);
-		sense(ant, 1, "food", 0);
-		move(ant);
-		move(ant);
-		pickUp(ant);
-		turn(ant, 4);
-		move(ant);
-		drop(ant);
-		move(ant);
-		printGame();
+		flip(ant,16384);
+//		move(ant);
+//		move(ant);
+//		move(ant);
+//		move(ant);
+//		move(ant);
+//		move(ant);
+//		move(ant);
+//		move(ant);
+//		move(ant);
+//		move(ant);
+//		turn(ant, 1);
+//		move(ant);
+//		move(ant);
+//		move(ant);
+//		sense(ant, 1, "food", 0);
+//		move(ant);
+//		move(ant);
+//		pickUp(ant);
+//		turn(ant, 4);
+//		move(ant);
+//		drop(ant);
+//		move(ant);
+//		printGame();
 		
 		
 		
