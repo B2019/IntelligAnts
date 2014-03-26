@@ -1,5 +1,8 @@
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.Random;
 
@@ -240,10 +243,37 @@ public class WorldGen {
 
 	public static void main(String[] args) {
 		WorldGen test = new WorldGen(150, 150);
-		
+		try {
+			test.exportWorld("test1");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public char[] getWorldArray() {
 		return worldArray;
 	}
+	
+	public void exportWorld(String filename) throws FileNotFoundException, UnsupportedEncodingException{
+		String file = filename + ".world";
+		PrintWriter writer = new PrintWriter(file, "UTF-8");
+	
+		writer.println(x);
+		writer.println(y);
+		
+		for(int i = 0; i < worldArray.length; i++){
+			if(i%150 == 0 && i != 0){
+				writer.println();
+			}
+			writer.print(worldArray[i]);
+			
+		}
+		
+		writer.close();
+	}
+	
 }
