@@ -19,8 +19,13 @@ public class WorldGen {
 		setUpPerim();
 		antHill(true);
 		antHill(false);
+		for(int i = 0; i < 11; i++){
 		food();
-		rocks();
+		}
+		for(int i = 0; i < 14; i++){
+			rocks();
+		}
+		
 		printWorld();
 	}
 
@@ -71,19 +76,28 @@ public class WorldGen {
 		Random rand = new Random();
 		int indexMax = (x * y);
 		int index = rand.nextInt(indexMax);
-		int rocksPlaced = 0;
-		while (rocksPlaced < 14) {
-			
-			if(worldArray[index] == s2)	{
-				worldArray[index] = '#';
-				rocksPlaced++;
-
-			} else {
-				index = rand.nextInt(indexMax);
+		int k = 0;
+		Boolean happy = false;
+		Boolean innerHappy = true;
+		while(happy == false){
+			innerHappy = true;
+			for(int i = 0; i < 3; i++){
+				if(worldArray[(index)+i+(k*x)] != '.'){
+					innerHappy = false;
+					break;
+				}
 			}
-			
+			if (innerHappy == false){
+			k = 0;
+			index = rand.nextInt(indexMax);
+			} else {
+			k++;
+			if(k > 3){
+				happy = true;
+			}
+			}
 		}
-		
+		worldArray[index + 1 + 150] = '#';
 		
 		
 	}
@@ -94,28 +108,34 @@ public class WorldGen {
 		Random rand = new Random();
 		int indexMax = (x * y);
 		int index = rand.nextInt(indexMax);
+		int k = 0;
 		Boolean happy = false;
-		while (happy == false) {
-			int[] coord = indexConv(index);
-			if ((coord[0] < (x - 14)) && coord[1] < (y - 14) && coord[0] != 0 && coord[1] != 0) {
-					
-					int topleftCorner = coordConv((coord[0]), (coord[1]));
-					int toprightCorner = coordConv((coord[0] + 4), (coord[1]));
-					int botleftCorner = coordConv((coord[0] + 2), coord[1] + 4);
-					int botrightCorner = coordConv((coord[0] + 6), coord[1] + 4);
-					
-					if(worldArray[topleftCorner] != s2 && worldArray[toprightCorner] != s2 && worldArray[botleftCorner] != s2 && worldArray[botrightCorner] != s2){
-						happy = true;
-					}
-							
-
+		Boolean innerHappy = true;
+		while(happy == false){
+			innerHappy = true;
+			for(int i = 0; i < 9; i++){
+				if(worldArray[(index)+(k*(x-1))+i] != '.'){
+					innerHappy = false;
+					break;
+				}
 			}
+			if (innerHappy == false){
+			k = 0;
 			index = rand.nextInt(indexMax);
+			} else {
+			k++;
+			if(k > 9){
+				happy = true;
+			}
+			}
 		}
-//		int dir = rand.nextInt(1);
-//		if(dir < 0.5){
-//			use this function to decide directional orientation of food blob ^^
-//		}
+		int dir = rand.nextInt(2);
+		Boolean left = true;
+		if(dir < 1){
+			left = false;
+		}
+		
+		if(left == true){
 		boolean newLine = false;
 		for(int i = 0; i < 5; i++){
 			
@@ -133,6 +153,29 @@ public class WorldGen {
 				newLine = true;
 			}
 		}
+		} else {
+			boolean newLine = false;
+			for(int i = 0; i < 5; i++){
+				
+				for(int j = 0; j < 5; j++){
+					worldArray[index + j] = '5';
+					
+				}
+				if(newLine == true){
+					
+					index = index+x-1;
+					newLine = false;
+				}
+				else{
+					index += x;
+					newLine = true;
+				}
+			}
+			
+			
+		}
+		
+		
 	}
 	
 	public void antHill(Boolean red) {
@@ -140,37 +183,38 @@ public class WorldGen {
 		char s2;
 		if (red == true) {
 			s = '+';
-			s2 = '*';
+			s2 = '-';
 		} else {
-			// change to -
-			s = '*';
+			s = '-';
 			s2 = '+';
 		}
 		Random rand = new Random();
 		int indexMax = (x * y);
 		int index = rand.nextInt(indexMax);
+		
+		
+		int k = 0;
 		Boolean happy = false;
-		while (happy == false) {
-			int[] coord = indexConv(index);
-			if ((coord[0] < (x - 14)) && coord[1] < (y - 14) && coord[0] != 0 && coord[1] != 0) {
-					
-					int topleftCorner = coordConv((coord[0] + 3), (coord[1]));
-					int toprightCorner = coordConv((coord[0] + 10), (coord[1]));
-					int midleftCorner = coordConv(coord[0], (coord[1] + 6));
-					int midrightCorner = coordConv((coord[0] + 12), (coord[1] + 6));
-					int botleftCorner = coordConv((coord[0] + 3), coord[1] + 12);
-					int botrightCorner = coordConv((coord[0] + 10), coord[1] + 12);
-					
-					if(worldArray[topleftCorner] != s2 && worldArray[toprightCorner] != s2 && worldArray[midleftCorner] != s2 && 
-							worldArray[midrightCorner] != s2 && worldArray[botleftCorner] != s2 && worldArray[botrightCorner] != s2){
-						happy = true;
-					}
-							
-
+		Boolean innerHappy = true;
+		while(happy == false){
+			innerHappy = true;
+			for(int i = 0; i < 15; i++){
+				if(worldArray[(index)+(k*(x-1))+i] != '.'){
+					innerHappy = false;
+					break;
+				}
 			}
+			if (innerHappy == false){
+			k = 0;
 			index = rand.nextInt(indexMax);
+			} else {
+			k++;
+			if(k > 15){
+				happy = true;
+			}
+			}
 		}
-
+		
 		int oddEvenLine = (index / x) % 2;
 		Boolean leftSide;
 		if (oddEvenLine == 1) {
@@ -185,7 +229,7 @@ public class WorldGen {
 		while (mid != 14) {
 			i += left;
 			for (int j = 0; j < mid; j++) {
-				worldArray[i + j] = s; //occassionally going out of bounds - not sure why
+				worldArray[i + j] = s;
 
 			}
 			i += mid;
