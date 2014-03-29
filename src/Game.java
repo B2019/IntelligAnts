@@ -22,8 +22,6 @@ public class Game {
 	int seed;
 	String accountAName;
 	String accountBName;
-	Brain accountABrain;
-	Brain accountBBrain;
 	
 	public Game(){
 		char[] worldArray = null;
