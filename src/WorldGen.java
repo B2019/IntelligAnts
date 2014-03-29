@@ -1,6 +1,8 @@
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
@@ -12,10 +14,29 @@ public class WorldGen {
 	int y;
 	char[] worldArray;
 
-	public WorldGen(int x, int y) {
-		this.x = x;
-		this.y = y;
-		newWorld();
+	
+	
+	public WorldGen() {
+		
+	}
+
+	public World loadWorld(String fileName) throws IOException {
+		BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream (fileName)));
+		//get the dimensions from first two lines.
+		x = Integer.parseInt(in.readLine());
+		y = Integer.parseInt(in.readLine());
+		char[] worldArray = new char[x * y];
+		
+		int c;
+		int i = 0;
+		while((c = in.read()) != -1) {
+			worldArray[i] = (char) c; 
+		}
+		return new World(worldArray);
+	}
+	
+	public World newWorld(int x, int y) {
+		worldArray = new char[x * y];
 		setUpPerim();
 		antHill(true);
 		antHill(false);
@@ -25,20 +46,14 @@ public class WorldGen {
 		for(int i = 0; i < 14; i++){
 			rocks();
 		}
-		
-		printWorld();
+		return new World(worldArray);
 	}
 
-	public void newWorld() {
-		worldArray = new char[x * y];
-
-	}
-
-	public int coordConv(int X, int Y) {
+	private int coordConv(int X, int Y) {
 		return X + (Y * x);
 	}
 
-	public int[] indexConv(int index) {
+	private int[] indexConv(int index) {
 		int[] coord = new int[2];
 		if (index < 150) {
 			coord[1] = 0;
@@ -50,7 +65,7 @@ public class WorldGen {
 		return coord;
 	}
 
-	public void setUpPerim() {
+	private void setUpPerim() {
 		int i = 0;
 		for (; i < x; i++) {
 			worldArray[i] = '#';
@@ -71,7 +86,7 @@ public class WorldGen {
 	}
 
 	
-	public void rocks(){
+	private void rocks(){
 		char s2 = '.';
 		Random rand = new Random();
 		int indexMax = (x * y);
@@ -102,7 +117,7 @@ public class WorldGen {
 		
 	}
 	
-	public void food(){
+	private void food(){
 		int foodSize = 5;
 		char s2 = '.';
 		Random rand = new Random();
@@ -178,7 +193,7 @@ public class WorldGen {
 		
 	}
 	
-	public void antHill(Boolean red) {
+	private void antHill(Boolean red) {
 		char s;
 		char s2;
 		if (red == true) {
@@ -285,24 +300,8 @@ public class WorldGen {
 		}
 	}
 
-	public static void main(String[] args) {
-		WorldGen test = new WorldGen(150, 150);
-		try {
-			test.exportWorld("test1");
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	public char[] getWorldArray() {
-		return worldArray;
-	}
 	
-	public void exportWorld(String filename) throws FileNotFoundException, UnsupportedEncodingException{
+	public void exportNewWorld(String filename) throws FileNotFoundException, UnsupportedEncodingException{
 		String file = filename + ".world";
 		PrintWriter writer = new PrintWriter(file, "UTF-8");
 	
