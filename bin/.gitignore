@@ -1,0 +1,14 @@
+/.DS_Store
+/Match.class
+/World.class
+/Brain.class
+/Instruction.class
+/Drop.class
+/Flip.class
+/Mark.class
+/Move.class
+/PickUp.class
+/Sense.class
+/Turn.class
+/Unmark.class
+/testbrain.Brain

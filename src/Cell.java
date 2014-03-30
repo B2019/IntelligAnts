@@ -102,17 +102,13 @@ public class Cell {
 			} else {
 				return "B";
 			}		
-		} else
-		if (passable == false){
+		} else if (passable == false){
 			return "#";
-		} else 
-		if (food.isEmpty() == false){
+		} else if (food.isEmpty() == false){
 			return "" + food.size();
-		} else 
-		if (antHill == 1){
+		} else  if (antHill == 1){
 			return "+";
-		} else
-		if (antHill == 2){
+		} else if (antHill == 2){
 			return "-";
 		} else {
 			return ".";

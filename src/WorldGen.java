@@ -16,27 +16,10 @@ public class WorldGen {
 
 	
 	
-	public WorldGen() {
-		
-	}
-
-	public World loadWorld(String fileName) throws IOException {
-		BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream (fileName)));
-		//get the dimensions from first two lines.
-		x = Integer.parseInt(in.readLine());
-		y = Integer.parseInt(in.readLine());
-		char[] worldArray = new char[x * y];
-		
-		int c;
-		int i = 0;
-		while((c = in.read()) != -1) {
-			worldArray[i] = (char) c; 
-		}
-		return new World(worldArray);
-	}
-	
-	public World newWorld(int x, int y) {
+	public WorldGen(int x, int y) {
 		worldArray = new char[x * y];
+		this.x = x;
+		this.y = y;
 		setUpPerim();
 		antHill(true);
 		antHill(false);
@@ -46,7 +29,6 @@ public class WorldGen {
 		for(int i = 0; i < 14; i++){
 			rocks();
 		}
-		return new World(worldArray);
 	}
 
 	private int coordConv(int X, int Y) {
@@ -205,6 +187,7 @@ public class WorldGen {
 		}
 		Random rand = new Random();
 		int indexMax = (x * y);
+		System.out.println(x);
 		int index = rand.nextInt(indexMax);
 		
 		
@@ -317,6 +300,10 @@ public class WorldGen {
 		}
 		
 		writer.close();
+	}
+
+	public char[] getWorldArray() {
+		return worldArray;		
 	}
 	
 }
