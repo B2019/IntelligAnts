@@ -224,7 +224,7 @@ public class WorldGen {
 		int mid = 7;
 		int right = 3;
 		int i = index; 
-		while (mid != 14) {
+		while (mid != 13) {
 			i += left;
 			for (int j = 0; j < mid; j++) {
 				worldArray[i + j] = s;
@@ -301,6 +301,14 @@ public class WorldGen {
 		
 		writer.close();
 	}
+	
+	public static void main(String[] args) {
+		WorldGen test = new WorldGen(150, 150);
+		test.antHill(true);
+		test.antHill(false);
+		test.printWorld();
+	}
+
 
 	public char[] getWorldArray() {
 		return worldArray;		
