@@ -7,9 +7,10 @@ import java.util.Scanner;
 public class Game {
 
 	Match match;
+	GUI gui;
 	
 	public Game() {
-		
+		gui = new GUI(this);
 	}
 	
 	public void createMatch() {
@@ -62,6 +63,5 @@ public class Game {
 	
 	public static void main(String[] args) {
 		Game game = new Game();
-		game.createMatch();
 	}
 }
