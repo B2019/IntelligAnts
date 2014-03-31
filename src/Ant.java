@@ -16,6 +16,11 @@ public class Ant {
 	int cooldown; //the cooldown of the ant from its last move action
 	Food food; //the Food object the ant is carrying
 	Cell cell; //current cell ant is in. 
+<<<<<<< HEAD
+=======
+	
+	//need to add current instruction
+>>>>>>> FETCH_HEAD
 	Instruction instruction;
 	
 	//Constructor
