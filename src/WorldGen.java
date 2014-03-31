@@ -301,14 +301,6 @@ public class WorldGen {
 		
 		writer.close();
 	}
-	
-	public static void main(String[] args) {
-		WorldGen test = new WorldGen(150, 150);
-		test.antHill(true);
-		test.antHill(false);
-		test.printWorld();
-	}
-
 
 	public char[] getWorldArray() {
 		return worldArray;		

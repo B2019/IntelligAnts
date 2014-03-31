@@ -18,6 +18,7 @@ public class Ant {
 	Cell cell; //current cell ant is in. 
 	
 	//need to add current instruction
+	Instruction instruction;
 	
 	//Constructor
 	public Ant(int antID, int teamID, Cell cell){
@@ -29,6 +30,7 @@ public class Ant {
 		cooldown = 0;
 		food = null;
 		this.cell = cell;
+		instruction = null;
 	}
 	
 	//Getters and Setters
@@ -54,6 +56,15 @@ public class Ant {
 	//Direction
 	public int getDirection() {
 		return direction;
+	}
+	
+	//Instruction
+	public Instruction getInstruction(){
+		return instruction;
+	}
+	
+	public void setInstruction(Instruction newInstruction){
+		instruction = newInstruction;
 	}
 
 	public void setDirection(int direction) {
