@@ -17,12 +17,10 @@ public class Game {
 		//Load world
 		World world = null;
 		try {
-			world = new World("1.world"); //Load world from file
-			//world = new World(150, 150); //Create new world using WorldGen
+			//world = new World("1.world"); //Load world from file
+			world = new World(150, 150); //Create new world using WorldGen
+			world.printWorld();
 		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
 		

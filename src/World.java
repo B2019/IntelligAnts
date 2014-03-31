@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Random;
 
 /* Game.java
  * Game controller. Handles game actions and creation.
@@ -166,10 +167,18 @@ public class World {
 	}
 	
 	//Pickup
-	public void pickUp(Ant ant) {
+	public boolean pickUp(Ant ant) {
 		if (ant.getFood() == null) { //Check ant doesn't already have food
-			ant.setFood(ant.getCell().removeFood()); //Removes food from cell and gives it to ant
+			Food food = ant.getCell().removeFood();
+			if(food != null){
+				ant.setFood(food); //Removes food from cell and gives it to ant
+				return true;
+			}
 		}
+		else{
+			return (ant.getCell().getFoodSize() > 0);
+		}
+		return false;
 	}
 	
 	//Drop
@@ -224,7 +233,17 @@ public class World {
 	//Flip
 	public boolean flip(Ant ant, int n) {
 		//TO DO!
-		return true;
+		Random rand = new Random();
+		//produces int between 0 & n-1
+		int x = rand.nextInt(n);
+		if(x ==0){
+			//st1
+			return true;
+		}
+		else{
+			//st2
+			return false;
+		}
 	}
 	
 	public void test(){
@@ -269,5 +288,9 @@ public class World {
 			return cells[cellID - dimensionX + oddEvenLine];
 		}
 		return null;
+	}
+	
+	public Ant getAnt(int i){
+		return ants[i];
 	}
 }
