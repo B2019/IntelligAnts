@@ -16,10 +16,7 @@ public class Brain {
 		BufferedReader file = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream (fileName)));
 		try {
 			while ((line = file.readLine()) != null) {
-<<<<<<< HEAD
 				line = line.toLowerCase(); //Make lower case
-=======
->>>>>>> FETCH_HEAD
 				line = line.split(";")[0]; //Remove comments
 				String[] strings = line.split(" ");
 				switch (strings[0]) {

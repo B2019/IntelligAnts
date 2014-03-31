@@ -18,12 +18,9 @@ public class World {
 	Cell[] cells;
 	int dimensionX; //World X dimension
 	int dimensionY; //World Y dimension
-<<<<<<< HEAD
 	int redScore;
 	int blackScore;
 	//to do each teams number no ants
-=======
->>>>>>> FETCH_HEAD
 	
 	
 	public World(String fileName) throws NumberFormatException, IOException {
@@ -35,11 +32,8 @@ public class World {
 		//Setup Cells and Ants
 		this.ants = new Ant[254];
 		this.cells = new Cell[dimensionX * dimensionY];
-<<<<<<< HEAD
 		this.redScore = 0;
 		this.blackScore = 0;
-=======
->>>>>>> FETCH_HEAD
 		
 		char[] charCells = new char[dimensionX * dimensionY];
 		int i = 0;
@@ -61,11 +55,8 @@ public class World {
 		//Setup Cells and Ants
 		this.ants = new Ant[254];
 		this.cells = new Cell[dimensionX * dimensionY];
-<<<<<<< HEAD
 		this.redScore = 0;
 		this.blackScore = 0;
-=======
->>>>>>> FETCH_HEAD
 		
 		WorldGen worldGen = new WorldGen(150,150);
 		convCharCells(worldGen.getWorldArray());
@@ -154,7 +145,6 @@ public class World {
 	}
 	
 	//Turn
-<<<<<<< HEAD
 	public void turn(Ant ant, String lr) {
 		int oldDirection = ant.getDirection();
 		int dir = 0;
@@ -163,9 +153,6 @@ public class World {
 		}else if(lr.equals("right")){
 			dir = (oldDirection + 1)%6;
 		}
-=======
-	public void turn(Ant ant, int dir) {
->>>>>>> FETCH_HEAD
 		ant.setDirection(dir);
 	}
 	
@@ -210,7 +197,6 @@ public class World {
 	
 	//Drop
 	public void drop(Ant ant) {
-<<<<<<< HEAD
 		if (ant.getFood() != null) { //Check ant has food
 			ant.getCell().addFood(ant.getFood()); //
 			if (ant.getCell().getAntHill() == 1) {
@@ -218,10 +204,6 @@ public class World {
 			} else if (ant.getCell().getAntHill() == 2) {
 				blackScore++;
 			}
-=======
-		if (ant.getFood() != null) { //Check ant doesn't already have food
-			ant.getCell().addFood(ant.getFood()); //
->>>>>>> FETCH_HEAD
 			ant.setFood(null);
 		}
 	}
@@ -283,15 +265,7 @@ public class World {
 		}
 	}
 	
-<<<<<<< HEAD
 
-=======
-	public void test(){
-		Ant ant = ants[6];
-		flip(ant,16384);
-	}
-	
->>>>>>> FETCH_HEAD
 	//Combat Check
 	public void combatCheck(Ant ant) {
 		int adjacentAnts = 0;
@@ -333,7 +307,6 @@ public class World {
 	
 	public Ant getAnt(int i){
 		return ants[i];
-<<<<<<< HEAD
 	}
 
 	public Cell getCell(int i) {
@@ -352,7 +325,3 @@ public class World {
 		return blackScore;
 	}
 }
-=======
-	}
-}
->>>>>>> FETCH_HEAD
