@@ -209,7 +209,7 @@ public class World {
 	}
 	
 	//Sense
-	public void sense(Ant ant, int direction, String cond, int markerNo) {
+	public boolean sense(Ant ant, int direction, String cond, int markerNo) {
 		Cell neighbourCell = getNeighborCell(ant.getCell(), ant.getDirection());
 		boolean result = false;
 		
@@ -246,7 +246,7 @@ public class World {
 			result = (neighbourCell.getAntHill() != ant.getTeamID() &&
 					neighbourCell.getAntHill() != 0);
 		}
-		System.out.println(result);
+		return result;
 	}
 	
 	//Flip

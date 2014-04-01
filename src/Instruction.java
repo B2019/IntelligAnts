@@ -101,13 +101,13 @@ class Drop implements Instruction{
 }
 
 class Sense implements Instruction{
-	String sensedir;
+	int sensedir;
 	int st1;
 	int st2;
 	String cond;
 	int i;
 	
-	public Sense(String sensedir, int st1, int st2, String cond) {
+	public Sense(int sensedir, int st1, int st2, String cond) {
 		super();
 		this.sensedir = sensedir;
 		this.st1 = st1;
@@ -115,7 +115,7 @@ class Sense implements Instruction{
 		this.cond = cond;
 	}
 	
-	public Sense(String sensedir, int st1, int st2, String cond, int i) {
+	public Sense(int sensedir, int st1, int st2, String cond, int i) {
 		super();
 		this.sensedir = sensedir;
 		this.st1 = st1;
@@ -124,7 +124,7 @@ class Sense implements Instruction{
 		this.i = i;
 	}
 
-	public String getSensedir() {
+	public int getSensedir() {
 		return sensedir;
 	}
 

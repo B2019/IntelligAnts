@@ -103,10 +103,16 @@ public class Match {
 								newInstructionNo = ((Drop)instruction).getSt();
 								break;
 							case "Sense" :
-								newInstructionNo = ((Sense)instruction).getSt2(); 
-								
-								//TO DO!
-								
+								int dir = ((Sense)instruction).getSensedir();
+								String cond = ((Sense)instruction).getCond();
+								markerNo = ((Sense)instruction).getI();
+								result = world.sense(ant, dir, cond, markerNo);
+								if(result){
+									newInstructionNo = ((Sense)instruction).getSt1(); 
+								}
+								else{
+									newInstructionNo = ((Sense)instruction).getSt2();
+								}
 								break;
 							case "Flip" :
 								int n = ((Flip)instruction).getP();
