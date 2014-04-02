@@ -18,6 +18,9 @@ public class World {
 	Cell[] cells;
 	int dimensionX; //World X dimension
 	int dimensionY; //World Y dimension
+	int redScore;
+	int blackScore;
+	//to do each teams number no ants
 	
 	
 	public World(String fileName) throws NumberFormatException, IOException {
@@ -29,6 +32,8 @@ public class World {
 		//Setup Cells and Ants
 		this.ants = new Ant[254];
 		this.cells = new Cell[dimensionX * dimensionY];
+		this.redScore = 0;
+		this.blackScore = 0;
 		
 		char[] charCells = new char[dimensionX * dimensionY];
 		int i = 0;
@@ -50,6 +55,8 @@ public class World {
 		//Setup Cells and Ants
 		this.ants = new Ant[254];
 		this.cells = new Cell[dimensionX * dimensionY];
+		this.redScore = 0;
+		this.blackScore = 0;
 		
 		WorldGen worldGen = new WorldGen(150,150);
 		convCharCells(worldGen.getWorldArray());
@@ -138,7 +145,14 @@ public class World {
 	}
 	
 	//Turn
-	public void turn(Ant ant, int dir) {
+	public void turn(Ant ant, String lr) {
+		int oldDirection = ant.getDirection();
+		int dir = 0;
+		if(lr.equals("left")){
+			dir = (oldDirection - 1)%6;
+		}else if(lr.equals("right")){
+			dir = (oldDirection + 1)%6;
+		}
 		ant.setDirection(dir);
 	}
 	
@@ -183,14 +197,19 @@ public class World {
 	
 	//Drop
 	public void drop(Ant ant) {
-		if (ant.getFood() != null) { //Check ant doesn't already have food
+		if (ant.getFood() != null) { //Check ant has food
 			ant.getCell().addFood(ant.getFood()); //
+			if (ant.getCell().getAntHill() == 1) {
+				redScore++;
+			} else if (ant.getCell().getAntHill() == 2) {
+				blackScore++;
+			}
 			ant.setFood(null);
 		}
 	}
 	
 	//Sense
-	public void sense(Ant ant, int direction, String cond, int markerNo) {
+	public boolean sense(Ant ant, int direction, String cond, int markerNo) {
 		Cell neighbourCell = getNeighborCell(ant.getCell(), ant.getDirection());
 		boolean result = false;
 		
@@ -227,7 +246,7 @@ public class World {
 			result = (neighbourCell.getAntHill() != ant.getTeamID() &&
 					neighbourCell.getAntHill() != 0);
 		}
-		System.out.println(result);
+		return result;
 	}
 	
 	//Flip
@@ -246,11 +265,7 @@ public class World {
 		}
 	}
 	
-	public void test(){
-		Ant ant = ants[6];
-		flip(ant,16384);
-	}
-	
+
 	//Combat Check
 	public void combatCheck(Ant ant) {
 		int adjacentAnts = 0;
@@ -292,5 +307,21 @@ public class World {
 	
 	public Ant getAnt(int i){
 		return ants[i];
+	}
+
+	public Cell getCell(int i) {
+		return cells[i];
+	}
+	
+	public Cell[] getCells() {
+		return cells;
+	}
+	
+	public int getRedScore() {
+		return redScore;
+	}
+	
+	public int getBlackScore() {
+		return blackScore;
 	}
 }

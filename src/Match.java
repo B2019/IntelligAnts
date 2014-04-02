@@ -1,3 +1,5 @@
+ // REMOVE PANEL WHEN REMOVING DEV GUI!!!!
+import java.awt.Panel;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -25,6 +27,7 @@ public class Match {
 		this.blackName = blackName;
 		this.redBrain = redBrain;
 		this.blackBrain = blackBrain;
+		//Initalise ant brains
 		for(int i = 0; i < noOfAnts; i++){
 			int antBrainNo = world.getAnt(i).getTeamID();
 			if(antBrainNo == 1){
@@ -35,7 +38,7 @@ public class Match {
 		}
 	}
 
-	public void runMatch() {
+	public int runMatch(TesterGUI gui) { //Remove Panel when removing DEV GUI!!!
 		//Loops through each turn
 		while(turn <= 300000){
 			//Gets World to loop through ants and get them to act
@@ -44,160 +47,108 @@ public class Match {
 				Ant ant = world.getAnt(tick);
 				int antBrainNo = ant.getTeamID();
 				if(ant.getAlive() == true){
-					if(ant.getCooldown() != 0){
+
+					
+					if(ant.getCooldown() >= 0){
 						ant.setCooldown(ant.getCooldown() - 1);
-					}
-					else{
+					} else {
+						//System.out.println(tick);
 						Instruction instruction = ant.getInstruction();
 						//check is move instruction 
 						//if it is, do move
 						//which will then return a boolean. next instruction will be based on this
 						//get ants instruction, st1 if true st2 if false
 						//then go to team brain, and set instruction to instruction at instruction no. st1 or st2
-						int newInstructionNo;
+						int newInstructionNo = 0;
 						boolean result;
 						switch (instruction.getClass().getName()) {
-						case "Move" :
-							result = world.move(ant);
-							if (result) {
-								newInstructionNo = ((Move)instruction).getSt1();
-								if(antBrainNo == 1){
-									ant.setInstruction(redBrain.getInstruction(newInstructionNo));
+							case "Move" :
+								result = world.move(ant);
+								if (result) {
+									newInstructionNo = ((Move)instruction).getSt1();
+									
+									ant.setCooldown(14);
 								}
 								else{
-									ant.setInstruction(blackBrain.getInstruction(newInstructionNo));
+									newInstructionNo = ((Move)instruction).getSt2();
+									
 								}
-								ant.setCooldown(14);
-							}
-							else{
-								newInstructionNo = ((Move)instruction).getSt2();
-								if(antBrainNo == 1){
-									ant.setInstruction(redBrain.getInstruction(newInstructionNo));
-								}
-								else{
-									ant.setInstruction(blackBrain.getInstruction(newInstructionNo));
-								}
-							}
-							break;
-						case "Turn" :
-							String lr = ((Turn)instruction).getLr();
-							int oldDirection = ant.getDirection();
-							int dir;
-							if(lr == "left"){
-								dir = (oldDirection - 1)%6;
-							}else if(lr == "right"){
-								dir = (oldDirection + 1)%6;
-							}
-							//print statement to make sure mod function is producing right direction
-							System.out.println(dir);
-							world.turn(ant, dir);
-							newInstructionNo = ((Turn)instruction).getSt();
-							if(antBrainNo == 1){
-								ant.setInstruction(redBrain.getInstruction(newInstructionNo));
-							}
-							else{
-								ant.setInstruction(blackBrain.getInstruction(newInstructionNo));
-							}
-							break;
-						case "Mark" :
-							int markerNo = ((Mark)instruction).getI();
-							world.mark(ant, markerNo);
-							newInstructionNo = ((Mark)instruction).getSt();
-							if(antBrainNo == 1){
-								ant.setInstruction(redBrain.getInstruction(newInstructionNo));
-							}
-							else{
-								ant.setInstruction(blackBrain.getInstruction(newInstructionNo));
-							}
-							break;
-						case "Unmark" :
-							markerNo = ((Unmark)instruction).getI();
-							world.unmark(ant, markerNo);
-							newInstructionNo = ((Unmark)instruction).getSt();
-							if(antBrainNo == 1){
-								ant.setInstruction(redBrain.getInstruction(newInstructionNo));
-							}
-							else{
-								ant.setInstruction(blackBrain.getInstruction(newInstructionNo));
-							}
-							break;
-						case "PickUp" :
-							boolean hasFood = world.pickUp(ant);
-							if(hasFood){
-								newInstructionNo = ((PickUp)instruction).getSt1();
-
-								if(antBrainNo == 1){
-									ant.setInstruction(redBrain.getInstruction(newInstructionNo));
+								break;
+							case "Turn" :
+								String lr = ((Turn)instruction).getLr();
+								world.turn(ant, lr);
+								newInstructionNo = ((Turn)instruction).getSt();
+								break;
+							case "Mark" :
+								int markerNo = ((Mark)instruction).getI();
+								world.mark(ant, markerNo);
+								newInstructionNo = ((Mark)instruction).getSt();
+								break;
+							case "Unmark" :
+								markerNo = ((Unmark)instruction).getI();
+								world.unmark(ant, markerNo);
+								newInstructionNo = ((Unmark)instruction).getSt();
+								break;
+							case "PickUp" :
+								boolean hasFood = world.pickUp(ant);
+								if(hasFood){
+									newInstructionNo = ((PickUp)instruction).getSt1();
 								}
 								else{
-									ant.setInstruction(blackBrain.getInstruction(newInstructionNo));
+									newInstructionNo = ((PickUp)instruction).getSt2();
 								}
-							}
-							else{
-								newInstructionNo = ((PickUp)instruction).getSt2();
-
-								if(antBrainNo == 1){
-									ant.setInstruction(redBrain.getInstruction(newInstructionNo));
-								}
-								else{
-									ant.setInstruction(blackBrain.getInstruction(newInstructionNo));
-								}
-							}
-							break;
-						case "Drop" :
-							world.drop(ant);
-							newInstructionNo = ((Drop)instruction).getSt();
-							if(antBrainNo == 1){
-								ant.setInstruction(redBrain.getInstruction(newInstructionNo));
-							}
-							else{
-								ant.setInstruction(blackBrain.getInstruction(newInstructionNo));
-							}
-							break;
-						case "Sense" :
-							System.out.print("Sense - ");
-							System.out.print(((Sense)instructions.get(i)).getSensedir() + " - ");
-							System.out.print(((Sense)instructions.get(i)).getSt1() + " - ");
-							System.out.print(((Sense)instructions.get(i)).getSt2() + " - ");
-							System.out.print(((Sense)instructions.get(i)).getCond() + " - ");
-							System.out.print(((Sense)instructions.get(i)).getI());
-							System.out.println();
-							break;
-						case "Flip" :
-							int n = ((Flip)instruction).getP();
-							result = world.flip(ant, n);
-							if (result) {
-								newInstructionNo = ((Flip)instruction).getSt1();
-								if(antBrainNo == 1){
-									ant.setInstruction(redBrain.getInstruction(newInstructionNo));
+								break;
+							case "Drop" :
+								world.drop(ant);
+								newInstructionNo = ((Drop)instruction).getSt();
+								break;
+							case "Sense" :
+								int dir = ((Sense)instruction).getSensedir();
+								String cond = ((Sense)instruction).getCond();
+								markerNo = ((Sense)instruction).getI();
+								result = world.sense(ant, dir, cond, markerNo);
+								if(result){
+									newInstructionNo = ((Sense)instruction).getSt1(); 
 								}
 								else{
-									ant.setInstruction(blackBrain.getInstruction(newInstructionNo));
+									newInstructionNo = ((Sense)instruction).getSt2();
 								}
-							}
-							else{
-								newInstructionNo = ((Flip)instruction).getSt2();
-								if(antBrainNo == 1){
-									ant.setInstruction(redBrain.getInstruction(newInstructionNo));
+								break;
+							case "Flip" :
+								int n = ((Flip)instruction).getP();
+								result = world.flip(ant, n);
+								if (result) {
+									newInstructionNo = ((Flip)instruction).getSt1();
 								}
-								else{
-									ant.setInstruction(blackBrain.getInstruction(newInstructionNo));
+								else {
+									newInstructionNo = ((Flip)instruction).getSt2();
 								}
-							}
-							break;
-					}
+								break;
+						}
+						if (antBrainNo == 1) {
+							ant.setInstruction(redBrain.getInstruction(newInstructionNo));
+						} else if(antBrainNo == 2) {
+							ant.setInstruction(blackBrain.getInstruction(newInstructionNo));
+						}
 					}
 				}
-				
-				if(antBrainNo == 1){
-					ant.setInstruction(redBrain.getInstruction(0));
-				}else if(antBrainNo == 2){
-					ant.setInstruction(blackBrain.getInstruction(0));
-				}
-				
 			}
 			turn += 1;
+			
+			//DELETE - USED FOR DEV GUI
+			gui.updateCells(this);
+			gui.getPanel().repaint();
+	        gui.getPanel().revalidate();
 		}
+		//Get winner
+		int redScore = world.getRedScore();
+		int blackScore = world.getBlackScore();
+		if (redScore > blackScore) {
+			return 1;	//Red wins!
+		} else if (blackScore > redScore) {
+			return 2;	//Black wins!
+		}
+		return 0; //Its a draw!
 	}
 
 	
