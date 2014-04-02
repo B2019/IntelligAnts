@@ -45,7 +45,7 @@ public class World {
 			}
 		}
 		convCharCells(charCells);
-		printWorld();
+		//printWorld();
 	}
 	
 	public World(int dimensionX, int dimensionY) {
@@ -149,7 +149,7 @@ public class World {
 		int oldDirection = ant.getDirection();
 		int dir = 0;
 		if(lr.equals("left")){
-			dir = (oldDirection - 1)%6;
+			dir = (((oldDirection - 1) % 6) + 6) % 6;
 		}else if(lr.equals("right")){
 			dir = (oldDirection + 1)%6;
 		}
@@ -209,42 +209,53 @@ public class World {
 	}
 	
 	//Sense
-	public boolean sense(Ant ant, int direction, String cond, int markerNo) {
-		Cell neighbourCell = getNeighborCell(ant.getCell(), ant.getDirection());
+	public boolean sense(Ant ant, String sensedir, String cond, int markerNo) {
+		Cell sensedCell = null;
+		//Get sensed cell
+		if (sensedir.equals("here")) {
+			sensedCell = ant.getCell();
+		} else if (sensedir.equals("ahead")) {
+			sensedCell = getNeighborCell(ant.getCell(), ant.getDirection());
+		} else if (sensedir.equals("leftahead")) {
+			int relativeDirection = ((((ant.getDirection() - 1) % 6) + 6) % 6);
+			sensedCell = getNeighborCell(ant.getCell(), relativeDirection);
+		} else if (sensedir.equals("rightahead")) {
+			sensedCell = getNeighborCell(ant.getCell(), (ant.getDirection() + 1) % 6);
+		}
+		
 		boolean result = false;
 		
 		if (cond.equals("friend")) {
-			result = (neighbourCell.getAnt().getTeamID() == ant.getTeamID());
+			result = (sensedCell.getAnt() != null && sensedCell.getAnt().getTeamID() == ant.getTeamID());
 		} else if (cond.equals("foe")) { 
-			result = (neighbourCell.getAnt().getTeamID() != ant.getTeamID());
+			result = (sensedCell.getAnt() != null && sensedCell.getAnt().getTeamID() != ant.getTeamID());
 		} else if (cond.equals("friendWithFood")) { 
-			result = (neighbourCell.getAnt().getTeamID() == ant.getTeamID() &&
-				neighbourCell.getAnt().getFood() != null);
+			result = (sensedCell.getAnt() != null && sensedCell.getAnt().getTeamID() == ant.getTeamID() &&
+					sensedCell.getAnt().getFood() != null);
 		} else if (cond.equals("foeWithFood")) {
-			result = (neighbourCell.getAnt().getTeamID() != ant.getTeamID() &&
-					neighbourCell.getAnt().getFood() != null);
+			result = (sensedCell.getAnt() != null && sensedCell.getAnt().getTeamID() != ant.getTeamID() &&
+					sensedCell.getAnt().getFood() != null);
 		} else if (cond.equals("food")) {
-			result = (neighbourCell.getFoodSize() > 0);
-			
+			result = (sensedCell.getFoodSize() > 0);
 		} else if (cond.equals("rock")) {
-			result = neighbourCell.isRocky();
+			result = sensedCell.isRocky();
 		} else if (cond.equals("marker")) {
 			if (ant.teamID == 1) {
-				result = neighbourCell.getRedMarker(markerNo);
+				result = sensedCell.getRedMarker(markerNo);
 			} else {
-				result = neighbourCell.getBlackMarker(markerNo);
+				result = sensedCell.getBlackMarker(markerNo);
 			}
 		} else if (cond.equals("foeMarker")) {
 			if (ant.teamID == 1) {
-				result = neighbourCell.containsRedMarker();
+				result = sensedCell.containsBlackMarker();
 			} else {
-				result = neighbourCell.containsBlackMarker();
+				result = sensedCell.containsRedMarker();
 			}
 		} else if (cond.equals("home")) {
-			result = (neighbourCell.getAntHill() == ant.getTeamID());
+			result = (sensedCell.getAntHill() == ant.getTeamID());
 		} else if (cond.equals("foeHome")) {
-			result = (neighbourCell.getAntHill() != ant.getTeamID() &&
-					neighbourCell.getAntHill() != 0);
+			result = (sensedCell.getAntHill() != ant.getTeamID() &&
+					sensedCell.getAntHill() != 0);
 		}
 		return result;
 	}

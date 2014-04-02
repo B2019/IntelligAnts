@@ -21,12 +21,13 @@ public class Cell {
 	public Cell(boolean passable, int numOfFood, int anthill, int cellID){
 		//initialise variables and set up food objects in the food array.
 		this.passable = passable;
-		food = new ArrayList<Food>();
+		this.food = new ArrayList<Food>();
 		initFood(numOfFood);
+		this.ant = null;
 		this.antHill = anthill;
-		redMarkers = new boolean[6];
+		this.redMarkers = new boolean[6];
+		this.blackMarkers = new boolean[6];
 		this.cellID = cellID;
-		blackMarkers = new boolean[6];
 	}
 	
 	public void initFood(int amountOfFood){
