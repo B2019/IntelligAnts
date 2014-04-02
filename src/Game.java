@@ -1,6 +1,4 @@
-/*TO DO
- * 
- */
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,11 +27,11 @@ public class Game {
 		}	
 		
 		//Load world
-		try {
-			world = new World("1.world"); //Load world from file
-		} catch (NumberFormatException | IOException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			world = new World("1.world"); //Load world from file
+//		} catch (NumberFormatException | IOException e) {
+//			e.printStackTrace();
+//		}
 		
 		
 		
@@ -51,7 +49,10 @@ public class Game {
 		return match;
 	}
 
-
 	
+	public static void main(String[] args) {
+		Game test = new Game();
+		test.createMatch();
+	}
 
 }

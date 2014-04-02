@@ -1,4 +1,4 @@
- // REMOVE PANEL WHEN REMOVING DEV GUI!!!!
+
 import java.awt.Panel;
 import java.io.IOException;
 import java.util.Scanner;
@@ -11,6 +11,8 @@ public class Match {
 	int turn; //current turn out of 300000
 	int tick; //current tick for the turn. (ant thats taking a go)
 	int noOfAnts = 254;
+	int currentTeam;
+	GameGUI gui;
 	
 	String redName;
 	String blackName;
@@ -27,6 +29,7 @@ public class Match {
 		this.blackName = blackName;
 		this.redBrain = redBrain;
 		this.blackBrain = blackBrain;
+		gui = new GameGUI(this);
 		//Initalise ant brains
 		for(int i = 0; i < noOfAnts; i++){
 			int antBrainNo = world.getAnt(i).getTeamID();
@@ -38,7 +41,7 @@ public class Match {
 		}
 	}
 
-	public int runMatch(TesterGUI gui) { //Remove Panel when removing DEV GUI!!!
+	public int runMatch() { //Remove Panel when removing DEV GUI!!!
 		//Loops through each turn
 		while(turn <= 300000){
 			//Gets World to loop through ants and get them to act
@@ -135,10 +138,6 @@ public class Match {
 			}
 			turn += 1;
 			
-			//DELETE - USED FOR DEV GUI
-			gui.updateCells(this);
-			gui.getPanel().repaint();
-	        gui.getPanel().revalidate();
 		}
 		//Get winner
 		int redScore = world.getRedScore();
@@ -151,7 +150,9 @@ public class Match {
 		return 0; //Its a draw!
 	}
 
-	
+	public String getCurrentTeam(){
+		return "Team " + currentTeam;
+	}
 	public World getWorld() {
 		return world;
 	}
