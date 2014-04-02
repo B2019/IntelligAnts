@@ -1,6 +1,9 @@
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> FETCH_HEAD
 import java.awt.Panel;
 import java.io.IOException;
 import java.util.Scanner;
@@ -45,11 +48,15 @@ public class Match {
 	}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public int runMatch(TesterGUI gui) { //Remove Panel when removing DEV GUI!!!
 
 		//SETUP GUI - REMOVE!
 		gui.createCells(this);
 		
+=======
+	public int runMatch() { //Remove Panel when removing DEV GUI!!!
+>>>>>>> FETCH_HEAD
 =======
 	public int runMatch() { //Remove Panel when removing DEV GUI!!!
 >>>>>>> FETCH_HEAD

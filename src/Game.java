@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> FETCH_HEAD
 
 
 import java.io.IOException;
@@ -51,6 +55,7 @@ public class Game {
 //		} catch (NumberFormatException | IOException e) {
 //			e.printStackTrace();
 //		}
+<<<<<<< HEAD
 		
 		
 		//Create matches list
@@ -64,6 +69,8 @@ public class Game {
 				pair++;
 			}
 		}
+=======
+>>>>>>> FETCH_HEAD
 		
 		
 		//Shuffle matches
@@ -123,6 +130,7 @@ public class Game {
 	
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     public static void main(String[] args) {
     	new Game();//makes new ButtonGrid with 2 parameters
@@ -130,6 +138,8 @@ public class Game {
         
     }
 
+=======
+>>>>>>> FETCH_HEAD
 =======
 >>>>>>> FETCH_HEAD
 	
