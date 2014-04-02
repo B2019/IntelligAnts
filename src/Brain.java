@@ -126,7 +126,7 @@ public class Brain {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		//printBrain();
+		printBrain();
 	}
 	
 	public Instruction getInstruction(int i) {

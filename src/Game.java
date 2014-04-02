@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-=======
-
->>>>>>> FETCH_HEAD
-
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -50,12 +44,11 @@ public class Game {
 		}	
 		*/
 		//Load world
-//		try {
-//			world = new World("1.world"); //Load world from file
-//		} catch (NumberFormatException | IOException e) {
-//			e.printStackTrace();
-//		}
-<<<<<<< HEAD
+		try {
+			world = new World("1.world"); //Load world from file
+		} catch (NumberFormatException | IOException e) {
+			e.printStackTrace();
+		}
 		
 		
 		//Create matches list
@@ -69,8 +62,6 @@ public class Game {
 				pair++;
 			}
 		}
-=======
->>>>>>> FETCH_HEAD
 		
 		
 		//Shuffle matches
@@ -129,23 +120,10 @@ public class Game {
 	}
 	
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-
     public static void main(String[] args) {
     	new Game();//makes new ButtonGrid with 2 parameters
     	
         
     }
-
-=======
->>>>>>> FETCH_HEAD
-=======
->>>>>>> FETCH_HEAD
-	
-	public static void main(String[] args) {
-		Game test = new Game();
-		test.createMatch();
-	}
 
 }
