@@ -11,7 +11,7 @@ public class Match {
 	int tick; //current tick for the turn. (ant thats taking a go)
 	int noOfAnts = 254;
 	int currentTeam;
-	GameGUI gui;
+	//GameGUI gui;
 	
 	String redName;
 	String blackName;
@@ -28,7 +28,7 @@ public class Match {
 		this.blackName = blackName;
 		this.redBrain = redBrain;
 		this.blackBrain = blackBrain;
-		gui = new GameGUI(this);
+		//gui = new GameGUI(this);
 		//Initalise ant brains
 		for(int i = 0; i < noOfAnts; i++){
 			int antBrainNo = world.getAnt(i).getTeamID();
@@ -140,6 +140,11 @@ public class Match {
 				}
 			}
 			turn += 1;
+			
+			//DELETE - USED FOR DEV GUI
+			gui.updateCells(this);
+			gui.getPanel().repaint();
+	        gui.getPanel().revalidate();
 			
 		}
 		//Get winner
