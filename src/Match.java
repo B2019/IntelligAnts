@@ -28,7 +28,7 @@ public class Match {
 		this.blackName = blackName;
 		this.redBrain = redBrain;
 		this.blackBrain = blackBrain;
-		gui = new GameGUI(this);
+		
 		//Initalise ant brains
 		for(int i = 0; i < noOfAnts; i++){
 			int antBrainNo = world.getAnt(i).getTeamID();
@@ -40,11 +40,9 @@ public class Match {
 		}
 	}
 
-	public int runMatch(TesterGUI gui) { //Remove Panel when removing DEV GUI!!!
+	public int runMatch() { //Remove Panel when removing DEV GUI!!!
 
-		//SETUP GUI - REMOVE!
-		gui.createCells(this);
-
+		gui = new GameGUI(this);
 		//Loops through each turn
 		while(turn <= 300000){
 			//Gets World to loop through ants and get them to act

@@ -5,11 +5,9 @@ import java.util.Collections;
 
 public class Game {
 
-	TesterGUI gui;
 	Match match;
 	
 	public Game() {
-		this.gui = new TesterGUI(150,150, this);
 		createTournament();
 	}
 	
@@ -79,7 +77,7 @@ public class Game {
 			playerB = players[matchPairings[i][1]];
 
 			this.match = new Match(world, seed, playerA.getName(), playerB.getName(), playerA.getBrain(), playerB.getBrain());
-			winner = this.match.runMatch(gui);
+			winner = this.match.runMatch();
 			if (winner == 1) {
 				playerA.setWins(playerA.getWins() + 1);
 				playerB.setLosses(playerB.getLosses() + 1);
@@ -96,7 +94,7 @@ public class Game {
 			playerB = players[matchPairings[i][0]];
 			
 			this.match = new Match(world, seed, playerA.getName(), playerB.getName(), playerA.getBrain(), playerB.getBrain());
-			winner = this.match.runMatch(gui);
+			winner = this.match.runMatch();
 			if (winner == 1) {
 				playerA.setWins(playerA.getWins() + 1);
 				playerB.setLosses(playerB.getLosses() + 1);
