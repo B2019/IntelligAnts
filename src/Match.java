@@ -43,6 +43,7 @@ public class Match {
 	public int runMatch() { //Remove Panel when removing DEV GUI!!!
 
 		gui = new GameGUI(this);
+		world.setGui(gui);
 		//Loops through each turn
 		while(turn <= 300000){
 			//Gets World to loop through ants and get them to act
@@ -136,8 +137,10 @@ public class Match {
 						}
 					}
 				}
+				gui.updateTick();
 			}
 			turn += 1;
+			gui.updateTurn();
 			
 		}
 		//Get winner

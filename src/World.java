@@ -20,9 +20,12 @@ public class World {
 	int dimensionY; //World Y dimension
 	int redScore;
 	int blackScore;
+	GameGUI gui;
 	//to do each teams number no ants
 	
 	
+	
+
 	public World(String fileName) throws NumberFormatException, IOException {
 		BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream (fileName)));
 		
@@ -135,9 +138,12 @@ public class World {
 		Cell newCell = getNeighborCell(ant.getCell(), ant.getDirection());
 		
 		if(newCell != null && newCell.isPassable()){
+			int origCell = ant.getCell().getCellID();
 			ant.getCell().setAnt(null);
+			gui.updateWorldMap(origCell);
 			ant.setCell(newCell);
 			newCell.setAnt(ant);
+			gui.updateWorldMap(ant.getCell().getCellID());
 			return true;
 		} else {
 			return false;
@@ -185,7 +191,8 @@ public class World {
 		if (ant.getFood() == null) { //Check ant doesn't already have food
 			Food food = ant.getCell().removeFood();
 			if(food != null){
-				ant.setFood(food); //Removes food from cell and gives it to ant
+				ant.setFood(food);//Removes food from cell and gives it to ant
+				gui.updateWorldMap(ant.getCell().getCellID());
 				return true;
 			}
 		}
@@ -201,8 +208,10 @@ public class World {
 			ant.getCell().addFood(ant.getFood()); //
 			if (ant.getCell().getAntHill() == 1) {
 				redScore++;
+				gui.updateRedScore();
 			} else if (ant.getCell().getAntHill() == 2) {
 				blackScore++;
+				gui.updateBlackScore();
 			}
 			ant.setFood(null);
 		}
@@ -291,6 +300,7 @@ public class World {
 			for (int i = 0; i < 3; i++) {
 				ant.getCell().addFood(new Food());
 			}
+			gui.updateWorldMap(ant.getCell().getCellID());
 		}	
 	}
 	
@@ -334,5 +344,9 @@ public class World {
 	
 	public int getBlackScore() {
 		return blackScore;
+	}
+	
+	public void setGui(GameGUI gui) {
+		this.gui = gui;
 	}
 }
