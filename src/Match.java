@@ -11,6 +11,7 @@ public class Match {
 	int tick; //current tick for the turn. (ant thats taking a go)
 	int noOfAnts = 254;
 	int currentTeam;
+	int speed;
 	GameGUI gui;
 	
 	String redName;
@@ -28,6 +29,8 @@ public class Match {
 		this.blackName = blackName;
 		this.redBrain = redBrain;
 		this.blackBrain = blackBrain;
+		speed = 50;
+		gui = new GameGUI(this);
 		
 		//Initalise ant brains
 		for(int i = 0; i < noOfAnts; i++){
@@ -38,14 +41,33 @@ public class Match {
 				world.getAnt(i).setInstruction(blackBrain.getInstruction(0));
 			}
 		}
+		
 	}
 
+	public Boolean canGameGo(){
+		if(gui.go == true){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public void setGUI(GameGUI game){
+		this.gui = game;
+	}
+	
 	public int runMatch() { //Remove Panel when removing DEV GUI!!!
-
-		gui = new GameGUI(this);
-		world.setGui(gui);
+		
 		//Loops through each turn
+		System.out.println("Game is a go");
+		gui.updateZoomMap(gui.getZoomCell());
+		System.out.println("Updating zoom map");
+		gui.updateTurn();
+		gui.updateWorldMap();
+		gui.updateBlackScore();
+		gui.updateRedScore();
 		while(turn <= 300000){
+			System.out.println("Turn");
 			//Gets World to loop through ants and get them to act
 			for(tick = 0; tick < noOfAnts; tick++){
 				//do something
@@ -137,10 +159,20 @@ public class Match {
 						}
 					}
 				}
-				gui.updateTick();
+				
 			}
 			turn += 1;
+			
+			if(turn%speed == 0){
+			
+			gui.updateZoomMap(gui.getZoomCell());
+			System.out.println("Updating zoom map");
 			gui.updateTurn();
+			gui.updateWorldMap();
+			gui.updateBlackScore();
+			gui.updateRedScore();
+			}
+			
 			
 		}
 		//Get winner
@@ -189,5 +221,9 @@ public class Match {
 		return blackBrain;
 	}
 
+//	public static void main(String[] args) {
+////		Match match = new Match(new World(150, 150), 888, "a", "b", new Brain("testbrain.brain"), new Brain("testbrain.brain"));
+//		match.runMatch();
+//	}
 	
 }

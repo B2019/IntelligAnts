@@ -13,6 +13,7 @@ public class Brain {
 		instructions = new ArrayList<Instruction>();
 
 		//Load file
+		//BufferedReader file = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream (fileName)));
 		BufferedReader file = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream (fileName)));
 		try {
 			while ((line = file.readLine()) != null) {
