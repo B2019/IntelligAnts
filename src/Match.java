@@ -22,6 +22,7 @@ public class Match {
 	public Match(World world, int seed, String redName, String blackName, Brain redBrain, Brain blackBrain) {
 		//Setup match
 		this.world = world;
+		world.resetScores();
 		this.seed = seed;
 		this.turn = 0;
 		this.tick = 0;
@@ -30,7 +31,7 @@ public class Match {
 		this.redBrain = redBrain;
 		this.blackBrain = blackBrain;
 		speed = 50;
-		gui = new GameGUI(this);
+		//gui = new GameGUI(this);
 		
 		//Initalise ant brains
 		for(int i = 0; i < noOfAnts; i++){
@@ -61,18 +62,23 @@ public class Match {
 		//Loops through each turn
 		System.out.println("Game is a go");
 		gui.updateZoomMap(gui.getZoomCell());
-		System.out.println("Updating zoom map");
+		//System.out.println("Updating zoom map");
 		gui.updateTurn();
 		gui.updateWorldMap();
 		gui.updateBlackScore();
 		gui.updateRedScore();
+		
 		while(turn <= 300000){
-			System.out.println("Turn");
+			
+			
+			//System.out.println("Turn");
 			//Gets World to loop through ants and get them to act
 			for(tick = 0; tick < noOfAnts; tick++){
+				
 				//do something
 				Ant ant = world.getAnt(tick);
 				int antBrainNo = ant.getTeamID();
+				
 				if(ant.getAlive() == true){
 
 					
@@ -88,6 +94,7 @@ public class Match {
 						//then go to team brain, and set instruction to instruction at instruction no. st1 or st2
 						int newInstructionNo = 0;
 						boolean result;
+						
 						switch (instruction.getClass().getName()) {
 							case "Move" :
 								result = world.move(ant);
@@ -165,14 +172,14 @@ public class Match {
 			
 			if(turn%speed == 0){
 			
-			gui.updateZoomMap(gui.getZoomCell());
-			System.out.println("Updating zoom map");
-			gui.updateTurn();
-			gui.updateWorldMap();
-			gui.updateBlackScore();
-			gui.updateRedScore();
-			}
 			
+				gui.updateZoomMap(gui.getZoomCell());
+				gui.updateTurn();
+				gui.updateWorldMap();
+				gui.updateBlackScore();
+				gui.updateRedScore();
+			
+			}
 			
 		}
 		//Get winner

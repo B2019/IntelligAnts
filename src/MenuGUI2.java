@@ -26,19 +26,20 @@ public class MenuGUI2 extends JFrame {
 	JTextField[] brains;
 
 	public MenuGUI2(Game game){
+		
 		this.game = game;
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("intelligANTS");
 		playPanel = new JPanel(new FlowLayout());
 		
-		JButton playButton = new JButton("PLAY");
 
+		JButton playButton = new JButton("PLAY");
+		
 		playButton.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				playPanel.removeAll();
 				setUpPanel();
 			}
 
@@ -48,8 +49,12 @@ public class MenuGUI2 extends JFrame {
 		playPanel.add(playButton);
 		playPanel.setSize(200, 200);
 		this.pack();
+		
 
 
+	}
+	public void testPlay(){
+		
 	}
 	
 	
@@ -154,28 +159,62 @@ public class MenuGUI2 extends JFrame {
 		this.pack();
 	}
 	
-	public void  playMatch(World world, int seed, Player playerA, Player playerB){
+	public void endMatch(Player winningPlayer){
+		playPanel.removeAll();
+		JLabel congrats;
+		if(winningPlayer != null){
+		congrats = new JLabel("Congratulations " + winningPlayer.getName() + "! You win!");
 		
-		Match match = new Match(world, seed, playerA.getName(), playerB.getName(), playerA.getBrain(), playerB.getBrain());
-		Boolean matchGo = false;
-		while (matchGo == false){
-			matchGo = match.canGameGo();
+		} else {
+		congrats = new JLabel("Oops! It was a draw!");
 		}
+		playPanel.add(congrats);
 		
-//		this.remove(playPanel);
-//		setSize(1200, 1401);
-//		
-//		
-//		
-//		this.add(gui);
-//		setSize(1201, 1401);
+		JButton nextMatch = new JButton("Play Next Match");
+		nextMatch.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				game.runNextMatch();
+				System.out.println(game.currentMatch);
+				System.out.println(game.noOfMatchPairings);
+			}
+
+		});
+		
+		playPanel.add(nextMatch);
+		this.pack();
+		
+		
 	}
 	
 
-//	public static void main(String[] args) {
-//		Game game = new Game();
-//		MenuGUI2 menu = new MenuGUI2(game);
-//	}
+	public void finishTournament(Player winner){
+		playPanel.removeAll();
+		JLabel congrats = new JLabel("Congratulations " + winner.getName() + "! You are the winner of the tournament!");
+		playPanel.add(congrats);
+		for(int i = 0; i < game.noOfPlayers; i++){
+			Player player = game.players[i];
+			JLabel playerText = new JLabel(player.getName() + "|  Wins: " + player.getWins() + "  Losses: " + player.getLosses() + "Draws: " + player.getDraws());
+			playPanel.add(playerText);
+		}
+		
+		JButton newGame = new JButton("New Tourney?");
+		newGame.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				playPanel.removeAll();
+				setUpPanel();
+			}
+
+		});
+		
+		playPanel.add(newGame);
+		this.pack();
+		
+	}
+	
 
 }
 
@@ -206,10 +245,25 @@ class PlayListener implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		match.runMatch();
+		
 	}
     
 }
 
+class PlayListener2 implements ActionListener {
+	
+	private Game game;
+
+	public PlayListener2(Game game){
+		this.game = game;
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		game.startGame();
+		
+	}
+    
+}
 
 

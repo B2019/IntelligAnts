@@ -64,6 +64,11 @@ public class World {
 		convCharCells(worldGen.getWorldArray());
 	}
 	
+	public void resetScores(){
+		blackScore = 0;
+		redScore = 0;
+	}
+	
 	public void convCharCells(char[] charCells) {
 		int antIndex = 0;
 		int cellIndex = 0;

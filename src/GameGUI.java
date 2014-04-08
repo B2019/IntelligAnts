@@ -16,7 +16,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.ImageIcon;
 
-public class GameGUI extends JFrame {
+public class GameGUI extends JFrame implements Runnable {
 	
 	private WorldPanel mainWorld;
 	private JPanel rightPanel;
@@ -29,10 +29,10 @@ public class GameGUI extends JFrame {
 	private int zoomCell;
 	private JPanel statsinner;
 	public Boolean go;
+	public Game game;
 
-	public GameGUI(Match match1) {
-		go = false;
-		
+	public GameGUI(Match match1, Game game) {
+		this.game = game;
 		
 		this.match = match1;
 		
@@ -110,8 +110,11 @@ public class GameGUI extends JFrame {
 		rightPanel.add(stats);
 		this.add(mainWorld);
 		this.add(rightPanel);
+		mainWorld.repaint();
+		stats.repaint();
+		zoomWorld.repaint();
 		setSize(1200, 1000);
-		match.setGUI(this);
+		//match.setGUI(this);
 		go = true;
 	}
 	
@@ -286,20 +289,22 @@ public class GameGUI extends JFrame {
 	public int getZoomCell(){
 		return zoomCell;
 	}
-	
-	public static void main(String[] args){
-		JFrame yay = new JFrame();
-		yay.setSize(1200, 1400);
-		yay.setVisible(true);
-		yay.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		Match match = new Match(new World(150, 150), 888, "a","b", new Brain("testbrain.brain"), new Brain("testbrain.brain"));
-		GameGUI gui = new GameGUI(match);
-		match.setGUI(gui);
-		yay.add(gui);
-		
-		yay.setSize(1201, 1401);
-		gui.match.runMatch();
+
+	@Override
+	public void run() {
+		match.setGUI(this);
+		game.getWinner(match.runMatch());
+		this.setVisible(false);
+		this.dispose();
 	}
+	
+//	public static void main(String[] args){
+//		
+//		Match match = new Match(new World(150, 150), 888, "a","b", new Brain("testbrain.brain"), new Brain("testbrain.brain"));
+//		GameGUI gui = new GameGUI(match);
+//		match.setGUI(gui);
+//		
+//	}
 	
 	
 }
