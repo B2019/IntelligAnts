@@ -13,13 +13,14 @@ public class WorldGen {
 	int x;
 	int y;
 	char[] worldArray;
-
+	Random rand;
 	
 	
-	public WorldGen(int x, int y) {
-		worldArray = new char[x * y];
-		this.x = x;
-		this.y = y;
+	public WorldGen(int seed) {
+		worldArray = new char[150 * 150];
+		this.x = 150;
+		this.y = 150;
+		this.rand = new Random(seed);
 		setUpPerim();
 		antHill(true);
 		antHill(false);
@@ -70,7 +71,6 @@ public class WorldGen {
 	
 	private void rocks(){
 		char s2 = '.';
-		Random rand = new Random();
 		int indexMax = (x * y);
 		int index = rand.nextInt(indexMax);
 		int k = 0;
@@ -102,7 +102,6 @@ public class WorldGen {
 	private void food(){
 		int foodSize = 5;
 		char s2 = '.';
-		Random rand = new Random();
 		int indexMax = (x * y);
 		int index = rand.nextInt(indexMax);
 		int k = 0;
@@ -185,9 +184,7 @@ public class WorldGen {
 			s = '-';
 			s2 = '+';
 		}
-		Random rand = new Random();
 		int indexMax = (x * y);
-		System.out.println(x);
 		int index = rand.nextInt(indexMax);
 		
 		

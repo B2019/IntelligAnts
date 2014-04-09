@@ -20,12 +20,16 @@ public class World {
 	int dimensionY; //World Y dimension
 	int redScore;
 	int blackScore;
-	//to do each teams number no ants
+	Random rand;
 	
 	
+<<<<<<< HEAD
 	
 
 	public World(String fileName) throws NumberFormatException, IOException {
+=======
+	public World(String fileName, int seed) throws NumberFormatException, IOException, WorldGenException {
+>>>>>>> BrainDesign
 		BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream (fileName)));
 		
 		//Get the dimensions from first two lines.
@@ -36,40 +40,50 @@ public class World {
 		this.cells = new Cell[dimensionX * dimensionY];
 		this.redScore = 0;
 		this.blackScore = 0;
+		this.rand = new Random(seed);
 		
 		char[] charCells = new char[dimensionX * dimensionY];
 		int i = 0;
 		int c;
-		while((c = in.read()) != -1) {
-			if ((char)c != ' ' && (char)c != '\n') {
-				charCells[i] = (char)c;
-				i++;
+		try {
+			while((c = in.read()) != -1) {
+				if ((char)c != ' ' && (char)c != '\n') {
+					charCells[i] = (char)c;
+					i++;
+				}
 			}
+		} catch (Exception e) {
+			throw new WorldGenException();
 		}
 		convCharCells(charCells);
 		//printWorld();
 	}
 	
-	public World(int dimensionX, int dimensionY) {
+	public World(int seed) throws WorldGenException {
 		//Create new random world using WorldGen
-		this.dimensionX = dimensionX;
-		this.dimensionY = dimensionY;
+		this.dimensionX = 150;
+		this.dimensionY = 150;
 		//Setup Cells and Ants
 		this.ants = new Ant[254];
 		this.cells = new Cell[dimensionX * dimensionY];
 		this.redScore = 0;
 		this.blackScore = 0;
+		this.rand = new Random(seed);
 		
-		WorldGen worldGen = new WorldGen(150,150);
+		WorldGen worldGen = new WorldGen(seed);
 		convCharCells(worldGen.getWorldArray());
 	}
 	
+<<<<<<< HEAD
 	public void resetScores(){
 		blackScore = 0;
 		redScore = 0;
 	}
 	
 	public void convCharCells(char[] charCells) {
+=======
+	public void convCharCells(char[] charCells) throws WorldGenException {
+>>>>>>> BrainDesign
 		int antIndex = 0;
 		int cellIndex = 0;
 		char c = 0;
@@ -109,6 +123,10 @@ public class World {
 				int digit = Character.getNumericValue(c);
 				cells[cellIndex] = new Cell(true, digit, 0, cellIndex);
 				cellIndex++;
+				break;
+			default :
+				throw new WorldGenException(c);
+					
 			}
 		}
 	}
@@ -141,10 +159,19 @@ public class World {
 		
 		Cell newCell = getNeighborCell(ant.getCell(), ant.getDirection());
 		
-		if(newCell != null && newCell.isPassable()){
+		if(ant.getCooldown() <= 0 && newCell != null && newCell.isPassable()){
 			ant.getCell().setAnt(null);
 			ant.setCell(newCell);
 			newCell.setAnt(ant);
+			ant.setCooldown(14);
+			//Check if it gets attacked
+			combatCheck(ant);
+			//Check if it attacks
+			for (int i = 0; i < 6; i++) {
+				if (getNeighborCell(ant.getCell(), i).getAnt() != null) {
+					combatCheck(getNeighborCell(ant.getCell(), i).getAnt());
+				}
+			}
 			return true;
 		} else {
 			return false;
@@ -167,7 +194,9 @@ public class World {
 	public void mark(Ant ant, int markerNo) {
 		switch(ant.getTeamID()){
 		case 1:
+			//System.out.println(ant.getCell().getRedMarker(markerNo));
 			ant.getCell().setRedMarker(markerNo, true);
+			//System.out.println(ant.getCell().getRedMarker(markerNo));
 			break;
 		case 2:
 			ant.getCell().setBlackMarker(markerNo, true);
@@ -269,8 +298,6 @@ public class World {
 	
 	//Flip
 	public boolean flip(Ant ant, int n) {
-		//TO DO!
-		Random rand = new Random();
 		//produces int between 0 & n-1
 		int x = rand.nextInt(n);
 		if(x ==0){
@@ -298,7 +325,7 @@ public class World {
 			for (int i = 0; i < 3; i++) {
 				ant.getCell().addFood(new Food());
 			}
-		}	
+		}
 	}
 	
 	//Get neighboring cell

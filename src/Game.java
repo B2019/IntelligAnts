@@ -34,6 +34,7 @@ public class Game {
 	public void createNewPlayers(String[] names, String[] brains){
 		players = new Player[noOfPlayers];
 		
+<<<<<<< HEAD
 		for(int i = 0; i < noOfPlayers; i++){
 			players[i] = new Player(names[i], new Brain(brains[i]));
 		}
@@ -41,6 +42,63 @@ public class Game {
 	}
 	
 	public void createTournament() {
+=======
+		//Create players
+		int noOfPlayers = 2; //Get number of players in tournament
+		Player[] players = new Player[noOfPlayers];
+		for (int playerNo = 0; playerNo < noOfPlayers; playerNo++) {
+			//Get player name
+			String playerName = ("Player " + playerNo);
+			//Get player brain
+			Brain playerBrain = null;
+			try {
+				playerBrain = new Brain("test.b");
+			} catch (BrainCompilerException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			//Create player
+			players[playerNo] = new Player(playerName, playerBrain);
+		}
+		
+		
+		//TESTER-REmove!!
+		Brain playerBrain = null;
+		try {
+			playerBrain = new Brain("sample.b");
+		} catch (BrainCompilerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		players[1] = new Player("test", playerBrain);
+		
+		//Create seed
+		int seed = 1234;
+		
+		
+		//Choose world(s?)
+		World world = null;
+		//Create new random world (need to implement seed!)
+		
+		try {
+			world = new World(seed); //Create new world using WorldGen
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (WorldGenException e) {
+			e.printStackTrace();
+		}	
+		
+		
+		
+		//Load world
+		try {
+			world = new World("1.world", seed); //Load world from file
+		} catch (NumberFormatException | IOException e) {
+			e.printStackTrace();
+		} catch (WorldGenException e) {
+			e.printStackTrace();
+		}
+>>>>>>> BrainDesign
 		
 		
 		noOfMatchPairings = ((noOfPlayers - 1) * noOfPlayers) / 2;
@@ -116,7 +174,27 @@ public class Game {
 			playerB = players[matchPairings[currentMatch][1]];
 			halfTime = true;
 			this.match = new Match(world, seed, playerA.getName(), playerB.getName(), playerA.getBrain(), playerB.getBrain());
+<<<<<<< HEAD
 			new Thread(new GameGUI(match, this)).start();
+=======
+			winner = this.match.runMatch(gui);
+			
+			/*
+			if (winner == 1) {
+				playerA.setWins(playerA.getWins() + 1);
+				playerB.setLosses(playerB.getLosses() + 1);
+			} else if (winner == 2) {
+				playerB.setWins(playerB.getWins() + 1);
+				playerA.setLosses(playerA.getLosses() + 1);
+			} else {
+				playerA.setDraws(playerA.getDraws() + 1);
+				playerB.setDraws(playerB.getDraws() + 1);
+			}
+			
+			//Play match 2
+			playerA = players[matchPairings[i][1]];
+			playerB = players[matchPairings[i][0]];
+>>>>>>> BrainDesign
 			
 		} else if (halfTime == true){
 			Player playerA;
@@ -134,7 +212,7 @@ public class Game {
 		for (int i = 1; i < noOfPlayers; i++){
 			if ((winner.getWins() * 2) + (winner.getDraws()) < (players[i].getWins() * 2) + (players[i].getDraws())) {
 				winner = players[i];
-			}
+			}*/
 		}
 		
 		gui.finishTournament(winner);

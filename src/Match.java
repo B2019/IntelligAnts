@@ -10,9 +10,14 @@ public class Match {
 	int turn; //current turn out of 300000
 	int tick; //current tick for the turn. (ant thats taking a go)
 	int noOfAnts = 254;
+<<<<<<< HEAD
 	int currentTeam;
 	int speed;
 	GameGUI gui;
+=======
+	int currentTeam;
+	//GameGUI gui;
+>>>>>>> BrainDesign
 	
 	String redName;
 	String blackName;
@@ -29,10 +34,15 @@ public class Match {
 		this.redName = redName;
 		this.blackName = blackName;
 		this.redBrain = redBrain;
+<<<<<<< HEAD
 		this.blackBrain = blackBrain;
 		speed = 50;
 		//gui = new GameGUI(this);
 		
+=======
+		this.blackBrain = blackBrain;
+		//gui = new GameGUI(this);
+>>>>>>> BrainDesign
 		//Initalise ant brains
 		for(int i = 0; i < noOfAnts; i++){
 			int antBrainNo = world.getAnt(i).getTeamID();
@@ -45,6 +55,7 @@ public class Match {
 		
 	}
 
+<<<<<<< HEAD
 	public Boolean canGameGo(){
 		if(gui.go == true){
 			return true;
@@ -72,6 +83,16 @@ public class Match {
 			
 			
 			//System.out.println("Turn");
+=======
+	public int runMatch(TesterGUI gui) { //Remove Panel when removing DEV GUI!!!
+
+
+		//SETUP GUI - REMOVE!
+		gui.createCells(this);
+
+		//Loops through each turn
+		while(turn <= 300000){
+>>>>>>> BrainDesign
 			//Gets World to loop through ants and get them to act
 			for(tick = 0; tick < noOfAnts; tick++){
 				
@@ -82,7 +103,7 @@ public class Match {
 				if(ant.getAlive() == true){
 
 					
-					if(ant.getCooldown() >= 0){
+					if(ant.getCooldown() > 0){
 						ant.setCooldown(ant.getCooldown() - 1);
 					} else {
 						//System.out.println(tick);
@@ -100,13 +121,11 @@ public class Match {
 								result = world.move(ant);
 								if (result) {
 									newInstructionNo = ((Move)instruction).getSt1();
-									
-									ant.setCooldown(14);
 								}
 								else{
 									newInstructionNo = ((Move)instruction).getSt2();
-									
 								}
+								
 								break;
 							case "Turn" :
 								String lr = ((Turn)instruction).getLr();
@@ -141,6 +160,7 @@ public class Match {
 								String cond = ((Sense)instruction).getCond();
 								markerNo = ((Sense)instruction).getI();
 								result = world.sense(ant, sensedir, cond, markerNo);
+								System.out.println(result);
 								if(result){
 									newInstructionNo = ((Sense)instruction).getSt1(); 
 								}
@@ -164,9 +184,11 @@ public class Match {
 						} else if(antBrainNo == 2) {
 							ant.setInstruction(blackBrain.getInstruction(newInstructionNo));
 						}
+						
 					}
 				}
 				
+<<<<<<< HEAD
 			}
 			turn += 1;
 			
@@ -180,7 +202,14 @@ public class Match {
 				gui.updateRedScore();
 			
 			}
+=======
+			}
+			turn += 1;
+>>>>>>> BrainDesign
 			
+			gui.updateCells(this);
+	        gui.getPanel().repaint();
+	        gui.getPanel().revalidate();
 		}
 		//Get winner
 		int redScore = world.getRedScore();
