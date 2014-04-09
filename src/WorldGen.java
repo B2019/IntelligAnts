@@ -1,23 +1,18 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.io.Writer;
 import java.util.Random;
 
 public class WorldGen {
 
-	int x;
-	int y;
-	char[] worldArray;
-	Random rand;
+	private int x;
+	private int y;
+	private char[] worldArray;
+	private Random rand;
 	
 	
 	public WorldGen(int seed) {
-		worldArray = new char[150 * 150];
+		this.worldArray = new char[150 * 150];
 		this.x = 150;
 		this.y = 150;
 		this.rand = new Random(seed);
@@ -32,11 +27,11 @@ public class WorldGen {
 		}
 	}
 
-	private int coordConv(int X, int Y) {
+	public int coordConv(int X, int Y) {
 		return X + (Y * x);
 	}
 
-	private int[] indexConv(int index) {
+	public int[] indexConv(int index) {
 		int[] coord = new int[2];
 		if (index < 150) {
 			coord[1] = 0;

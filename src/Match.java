@@ -1,28 +1,19 @@
 
-import java.awt.Panel;
-import java.io.IOException;
-import java.util.Scanner;
 
 public class Match {
 	
-	World world;
-	int seed;
-	int turn; //current turn out of 300000
-	int tick; //current tick for the turn. (ant thats taking a go)
-	int noOfAnts = 254;
-<<<<<<< HEAD
-	int currentTeam;
-	int speed;
-	GameGUI gui;
-=======
-	int currentTeam;
-	//GameGUI gui;
->>>>>>> BrainDesign
-	
-	String redName;
-	String blackName;
-	Brain redBrain;
-	Brain blackBrain;
+	private World world;
+	private int seed;
+	private int turn; //current turn out of 300000
+	private int tick; //current tick for the turn. (ant thats taking a go)
+	private int noOfAnts = 254;
+	private int currentTeam;
+	private int speed;
+	private GameGUI gui;
+	private String redName;
+	private String blackName;
+	private Brain redBrain;
+	private Brain blackBrain;
 
 	public Match(World world, int seed, String redName, String blackName, Brain redBrain, Brain blackBrain) {
 		//Setup match
@@ -34,15 +25,9 @@ public class Match {
 		this.redName = redName;
 		this.blackName = blackName;
 		this.redBrain = redBrain;
-<<<<<<< HEAD
 		this.blackBrain = blackBrain;
 		speed = 50;
 		//gui = new GameGUI(this);
-		
-=======
-		this.blackBrain = blackBrain;
-		//gui = new GameGUI(this);
->>>>>>> BrainDesign
 		//Initalise ant brains
 		for(int i = 0; i < noOfAnts; i++){
 			int antBrainNo = world.getAnt(i).getTeamID();
@@ -55,9 +40,8 @@ public class Match {
 		
 	}
 
-<<<<<<< HEAD
 	public Boolean canGameGo(){
-		if(gui.go == true){
+		if(gui.canGo()){
 			return true;
 		} else {
 			return false;
@@ -68,10 +52,10 @@ public class Match {
 		this.gui = game;
 	}
 	
-	public int runMatch() { //Remove Panel when removing DEV GUI!!!
+	public int runMatch() { 
 		
 		//Loops through each turn
-		System.out.println("Game is a go");
+		//System.out.println("Game is a go");
 		gui.updateZoomMap(gui.getZoomCell());
 		//System.out.println("Updating zoom map");
 		gui.updateTurn();
@@ -80,19 +64,7 @@ public class Match {
 		gui.updateRedScore();
 		
 		while(turn <= 300000){
-			
-			
 			//System.out.println("Turn");
-=======
-	public int runMatch(TesterGUI gui) { //Remove Panel when removing DEV GUI!!!
-
-
-		//SETUP GUI - REMOVE!
-		gui.createCells(this);
-
-		//Loops through each turn
-		while(turn <= 300000){
->>>>>>> BrainDesign
 			//Gets World to loop through ants and get them to act
 			for(tick = 0; tick < noOfAnts; tick++){
 				
@@ -160,7 +132,7 @@ public class Match {
 								String cond = ((Sense)instruction).getCond();
 								markerNo = ((Sense)instruction).getI();
 								result = world.sense(ant, sensedir, cond, markerNo);
-								System.out.println(result);
+								//System.out.println(result);
 								if(result){
 									newInstructionNo = ((Sense)instruction).getSt1(); 
 								}
@@ -187,8 +159,6 @@ public class Match {
 						
 					}
 				}
-				
-<<<<<<< HEAD
 			}
 			turn += 1;
 			
@@ -202,18 +172,11 @@ public class Match {
 				gui.updateRedScore();
 			
 			}
-=======
-			}
-			turn += 1;
->>>>>>> BrainDesign
-			
-			gui.updateCells(this);
-	        gui.getPanel().repaint();
-	        gui.getPanel().revalidate();
 		}
 		//Get winner
 		int redScore = world.getRedScore();
 		int blackScore = world.getBlackScore();
+		
 		if (redScore > blackScore) {
 			return 1;	//Red wins!
 		} else if (blackScore > redScore) {
@@ -257,9 +220,9 @@ public class Match {
 		return blackBrain;
 	}
 
-//	public static void main(String[] args) {
-////		Match match = new Match(new World(150, 150), 888, "a", "b", new Brain("testbrain.brain"), new Brain("testbrain.brain"));
-//		match.runMatch();
-//	}
-	
+	public void setSpeed(int speed) {
+		this.speed = speed;
+		
+	}
+
 }

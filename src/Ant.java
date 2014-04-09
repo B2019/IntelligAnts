@@ -9,14 +9,14 @@
 
 public class Ant {
 
-	Boolean alive; //whether the ant is alive or not
-	int antID; //the id of the ant
-	int teamID; //the team id of the ant.
-	int direction; //the direction of the ant (0-5)
-	int cooldown; //the cooldown of the ant from its last move action
-	Food food; //the Food object the ant is carrying
-	Cell cell; //current cell ant is in. 
-	Instruction instruction;
+	private Boolean alive; //whether the ant is alive or not
+	private int antID; //the id of the ant
+	private int teamID; //the team id of the ant.
+	private int direction; //the direction of the ant (0-5)
+	private int cooldown; //the cooldown of the ant from its last move action
+	private Food food; //the Food object the ant is carrying
+	private Cell cell; //current cell ant is in. 
+	private Instruction instruction;
 	
 	//Constructor
 	public Ant(int antID, int teamID, Cell cell){

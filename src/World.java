@@ -14,22 +14,15 @@ import java.util.Random;
 
 
 public class World {
-	Ant[] ants;
-	Cell[] cells;
-	int dimensionX; //World X dimension
-	int dimensionY; //World Y dimension
-	int redScore;
-	int blackScore;
-	Random rand;
+	private Ant[] ants;
+	private Cell[] cells;
+	private int dimensionX; //World X dimension
+	private int dimensionY; //World Y dimension
+	private int redScore;
+	private int blackScore;
+	private Random rand;
 	
-	
-<<<<<<< HEAD
-	
-
-	public World(String fileName) throws NumberFormatException, IOException {
-=======
 	public World(String fileName, int seed) throws NumberFormatException, IOException, WorldGenException {
->>>>>>> BrainDesign
 		BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream (fileName)));
 		
 		//Get the dimensions from first two lines.
@@ -74,16 +67,12 @@ public class World {
 		convCharCells(worldGen.getWorldArray());
 	}
 	
-<<<<<<< HEAD
 	public void resetScores(){
 		blackScore = 0;
 		redScore = 0;
 	}
 	
-	public void convCharCells(char[] charCells) {
-=======
 	public void convCharCells(char[] charCells) throws WorldGenException {
->>>>>>> BrainDesign
 		int antIndex = 0;
 		int cellIndex = 0;
 		char c = 0;
@@ -276,13 +265,13 @@ public class World {
 		} else if (cond.equals("rock")) {
 			result = sensedCell.isRocky();
 		} else if (cond.equals("marker")) {
-			if (ant.teamID == 1) {
+			if (ant.getTeamID() == 1) {
 				result = sensedCell.getRedMarker(markerNo);
 			} else {
 				result = sensedCell.getBlackMarker(markerNo);
 			}
 		} else if (cond.equals("foeMarker")) {
-			if (ant.teamID == 1) {
+			if (ant.getTeamID() == 1) {
 				result = sensedCell.containsBlackMarker();
 			} else {
 				result = sensedCell.containsRedMarker();

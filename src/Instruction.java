@@ -1,10 +1,9 @@
 
-public interface Instruction {
-}
+interface Instruction {}
 
 class Move implements Instruction{
-	int st1;
-	int st2;
+	private int st1;
+	private int st2;
 
 	public Move(int st1, int st2) {
 		this.st1 = st1;
@@ -21,8 +20,8 @@ class Move implements Instruction{
 }
 
 class Turn implements Instruction{
-	String lr;
-	int st;
+	private String lr;
+	private int st;
 
 	public Turn(String lr, int st) {
 		super();
@@ -40,8 +39,9 @@ class Turn implements Instruction{
 }
 
 class Mark implements Instruction{
-	int i;
-	int st;
+	private int i;
+	private int st;
+	
 	public Mark(int i, int st) {
 		super();
 		this.i = i;
@@ -56,8 +56,9 @@ class Mark implements Instruction{
 }
 
 class Unmark implements Instruction{
-	int i;
-	int st;
+	private int i;
+	private int st;
+	
 	public Unmark(int i, int st) {
 		super();
 		this.i = i;
@@ -72,8 +73,9 @@ class Unmark implements Instruction{
 }
 
 class PickUp implements Instruction{
-	int st1;
-	int st2;
+	private int st1;
+	private int st2;
+	
 	public PickUp(int st1, int st2) {
 		super();
 		this.st1 = st1;
@@ -88,7 +90,7 @@ class PickUp implements Instruction{
 }
 
 class Drop implements Instruction{
-	int st;
+	private int st;
 
 	public Drop(int st) {
 		super();
@@ -101,11 +103,11 @@ class Drop implements Instruction{
 }
 
 class Sense implements Instruction{
-	String sensedir;
-	int st1;
-	int st2;
-	String cond;
-	int i;
+	private String sensedir;
+	private int st1;
+	private int st2;
+	private String cond;
+	private int i;
 	
 	public Sense(String sensedir, int st1, int st2, String cond) {
 		this.sensedir = sensedir;
@@ -144,9 +146,9 @@ class Sense implements Instruction{
 }
 
 class Flip implements Instruction{
-	int p;
-	int st1;
-	int st2;
+	private int p;
+	private int st1;
+	private int st2;
 	
 	public Flip(int p, int st1, int st2) {
 		super();

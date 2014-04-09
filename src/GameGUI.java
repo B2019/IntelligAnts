@@ -4,8 +4,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Hashtable;
 
 import javax.imageio.ImageIO;
@@ -22,14 +24,14 @@ public class GameGUI extends JFrame implements Runnable {
 	private JPanel rightPanel;
 	private ZoomPanel zoomWorld;
 	private JPanel stats;
-	public Match match;
+	private Match match;
 	private JLabel turnlabel;
 	private JLabel team1Foodlabel;
 	private JLabel team2Foodlabel;
 	private int zoomCell;
 	private JPanel statsinner;
-	public Boolean go;
-	public Game game;
+	private Boolean go;
+	private Game game;
 
 	public GameGUI(Match match1, Game game) {
 		this.game = game;
@@ -64,7 +66,7 @@ public class GameGUI extends JFrame implements Runnable {
          
 		
 		JLabel turnlbl = new JLabel("Turn:");
-	turnlbl.setFont(font);
+		turnlbl.setFont(font);
 		turnlabel = new JLabel("" + match.getTurn() + " / 300000");
 		turnlabel.setFont(font);
 		statsinner.add(turnlbl, BorderLayout.CENTER);
@@ -100,10 +102,6 @@ public class GameGUI extends JFrame implements Runnable {
 	    table.put (100, new JLabel("Fast"));
 	    scrollerSpeed.setLabelTable (table);
 		scrollerSpeed.addChangeListener(new BoundedChangeListener(match));
-		
-//		JButton gameStart = new JButton("Start Game");
-//		gameStart.addActionListener(new PlayListener(match));
-//		stats.add(gameStart);
 		
 		rightPanel.add(zoomWorld);
 		
@@ -141,42 +139,43 @@ public class GameGUI extends JFrame implements Runnable {
 			BufferedImage foodPicture = null;
 			BufferedImage groundPicture = null;
 			
+			
 			if(cell.getAnt() != null){
 				if(cell.getAnt().getTeamID() == 1){
-				image = "rant" + cell.getAnt().getDirection() + ".png";	
-				antPicture = ImageIO.read(new File("/Users/Adam/Documents/University/Year2/Term2/SE/IntelligAnts/IntelligAnts/src/Art/" + image));				
+				image = "Art/rant" + cell.getAnt().getDirection() + ".png";	
+				antPicture = ImageIO.read(new File(getClass().getResource(image).getPath()));				
 				} else {
-					image = "bant" + cell.getAnt().getDirection() + ".png";	
-					antPicture = ImageIO.read(new File("/Users/Adam/Documents/University/Year2/Term2/SE/IntelligAnts/IntelligAnts/src/Art/" + image));				
+					image = "Art/bant" + cell.getAnt().getDirection() + ".png";	
+					antPicture = ImageIO.read(new File(getClass().getResource(image).getPath()));				
 				}
 				if(cell.getAnt().getFood() != null){
-					image = "foodpick" + cell.getAnt().getDirection() + ".png";	
-					foodPickPicture = ImageIO.read(new File("/Users/Adam/Documents/University/Year2/Term2/SE/IntelligAnts/IntelligAnts/src/Art/" + image));	 						
+					image = "Art/foodpick" + cell.getAnt().getDirection() + ".png";	
+					foodPickPicture = ImageIO.read(new File(getClass().getResource(image).getPath()));	 						
 				}
 			}
 			if((foodnum > 0)){
 				if(foodnum < 5){
-					image = "food" + foodnum + ".png";
-					foodPicture = ImageIO.read(new File("/Users/Adam/Documents/University/Year2/Term2/SE/IntelligAnts/IntelligAnts/src/Art/" + image));				
+					image = "Art/food" + foodnum + ".png";
+					foodPicture = ImageIO.read(new File(getClass().getResource(image).getPath()));				
 
 				} else {
-					image = "food" + 5 + ".png";
-					foodPicture = ImageIO.read(new File("/Users/Adam/Documents/University/Year2/Term2/SE/IntelligAnts/IntelligAnts/src/Art/" + image));				
+					image = "Art/food" + 5 + ".png";
+					foodPicture = ImageIO.read(new File(getClass().getResource(image).getPath()));				
 
 				}
 			}
 			if(cell.isRocky() == false){
-				groundPicture = ImageIO.read(new File("/Users/Adam/Documents/University/Year2/Term2/SE/IntelligAnts/IntelligAnts/src/Art/" + "rock1.png"));	
+				groundPicture = ImageIO.read(new File(getClass().getResource("Art/rock1.png").getPath()));	
 
 			} else 
 			if(cell.getAntHill() == 1){
-				groundPicture = ImageIO.read(new File("/Users/Adam/Documents/University/Year2/Term2/SE/IntelligAnts/IntelligAnts/src/Art/" + "ranthill.png"));
+				groundPicture = ImageIO.read(new File(getClass().getResource("Art/ranthill.png").getPath()));
 			} else 
 				if (cell.getAntHill() == 2){
-					groundPicture = ImageIO.read(new File("/Users/Adam/Documents/University/Year2/Term2/SE/IntelligAnts/IntelligAnts/src/Art/" + "banthill.png"));
+					groundPicture = ImageIO.read(new File(getClass().getResource("Art/banthill.png").getPath()));
 				}
 				else {
-					groundPicture = ImageIO.read(new File("/Users/Adam/Documents/University/Year2/Term2/SE/IntelligAnts/IntelligAnts/src/Art/" + "ground1.png"));
+					groundPicture = ImageIO.read(new File(getClass().getResource("Art/ground1.png").getPath()));
 
 				}
 			
@@ -292,22 +291,17 @@ public class GameGUI extends JFrame implements Runnable {
 
 	@Override
 	public void run() {
-		match.setGUI(this);
-		game.getWinner(match.runMatch());
+		this.match.setGUI(this);
+		this.game.getWinner(match.runMatch());
 		this.setVisible(false);
 		this.dispose();
 	}
 	
-//	public static void main(String[] args){
-//		
-//		Match match = new Match(new World(150, 150), 888, "a","b", new Brain("testbrain.brain"), new Brain("testbrain.brain"));
-//		GameGUI gui = new GameGUI(match);
-//		match.setGUI(gui);
-//		
-//	}
-	
-	
+	public boolean canGo() {
+		return go;
+	}
 }
+
 
 class HoverListener extends MouseAdapter {
 	
@@ -330,32 +324,32 @@ class HoverListener extends MouseAdapter {
     	int actY = y/5;
     	
     	return actX + (actY * 150);
-    }
-    
+    }    
 }
+
 
 class BoundedChangeListener implements ChangeListener {
 	
-	Match match;
+	private Match match;
 	
 	public BoundedChangeListener(Match match){
 		this.match = match;
 	}
 	
-	  public void stateChanged(ChangeEvent changeEvent) {
-	    Object source = changeEvent.getSource();
-	    if (source instanceof JSlider) {
-	      JSlider theJSlider = (JSlider) source;
-	      if (!theJSlider.getValueIsAdjusting()) {
-	    	  if(theJSlider.getValue() == 0){
-	    		  match.speed = 1;
-	    	  } else {
-	    	  match.speed = (int) (theJSlider.getValue() * 10);
-	    	  }
-	      }
-	    }
-	  }
+	public void stateChanged(ChangeEvent changeEvent) {
+		Object source = changeEvent.getSource();
+		if (source instanceof JSlider) {
+			JSlider theJSlider = (JSlider) source;
+			if (!theJSlider.getValueIsAdjusting()) {
+				if(theJSlider.getValue() == 0){
+					this.match.setSpeed(1);
+				} else {
+					this.match.setSpeed((int) (theJSlider.getValue() * 10));
+				}
+			}
+		}
 	}
+}
 
 
 

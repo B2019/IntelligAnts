@@ -1,20 +1,18 @@
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.geom.Rectangle2D;
-
 import javax.swing.JPanel;
 
 
 public class WorldPanel extends JPanel {
 
 
-	Cell[] cellArray;
-	float size;
-	int rectX;
-	int rectY;
+	private Cell[] cellArray;
+	private float size;
+	private int rectX;
+	private int rectY;
 	
 	public WorldPanel(Cell[] cells, float f){
 		this.cellArray = cells;
