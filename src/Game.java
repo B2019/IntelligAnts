@@ -17,17 +17,33 @@ public class Game {
 		
 		
 		//Create players
-		int noOfPlayers = 4; //Get number of players in tournament
+		int noOfPlayers = 2; //Get number of players in tournament
 		Player[] players = new Player[noOfPlayers];
 		for (int playerNo = 0; playerNo < noOfPlayers; playerNo++) {
 			//Get player name
 			String playerName = ("Player " + playerNo);
 			//Get player brain
-			Brain playerBrain = new Brain("testbrain.brain");
+			Brain playerBrain = null;
+			try {
+				playerBrain = new Brain("test.b");
+			} catch (BrainCompilerException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			//Create player
 			players[playerNo] = new Player(playerName, playerBrain);
 		}
 		
+		
+		//TESTER-REmove!!
+		Brain playerBrain = null;
+		try {
+			playerBrain = new Brain("sample.b");
+		} catch (BrainCompilerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		players[1] = new Player("test", playerBrain);
 		
 		//Create seed
 		int seed = 1234;
@@ -36,17 +52,23 @@ public class Game {
 		//Choose world(s?)
 		World world = null;
 		//Create new random world (need to implement seed!)
-		/*
+		
 		try {
-			world = new World(150, 150); //Create new world using WorldGen
+			world = new World(seed); //Create new world using WorldGen
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
+		} catch (WorldGenException e) {
+			e.printStackTrace();
 		}	
-		*/
+		
+		
+		
 		//Load world
 		try {
-			world = new World("1.world"); //Load world from file
+			world = new World("1.world", seed); //Load world from file
 		} catch (NumberFormatException | IOException e) {
+			e.printStackTrace();
+		} catch (WorldGenException e) {
 			e.printStackTrace();
 		}
 		
@@ -80,6 +102,8 @@ public class Game {
 
 			this.match = new Match(world, seed, playerA.getName(), playerB.getName(), playerA.getBrain(), playerB.getBrain());
 			winner = this.match.runMatch(gui);
+			
+			/*
 			if (winner == 1) {
 				playerA.setWins(playerA.getWins() + 1);
 				playerB.setLosses(playerB.getLosses() + 1);
@@ -114,7 +138,7 @@ public class Game {
 		for (int i = 1; i < noOfPlayers; i++){
 			if ((winner.getWins() * 2) + (winner.getDraws()) < (players[i].getWins() * 2) + (players[i].getDraws())) {
 				winner = players[i];
-			}
+			}*/
 		}
 			
 	}

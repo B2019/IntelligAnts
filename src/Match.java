@@ -38,9 +38,11 @@ public class Match {
 				world.getAnt(i).setInstruction(blackBrain.getInstruction(0));
 			}
 		}
+		
 	}
 
 	public int runMatch(TesterGUI gui) { //Remove Panel when removing DEV GUI!!!
+
 
 		//SETUP GUI - REMOVE!
 		gui.createCells(this);
@@ -55,7 +57,7 @@ public class Match {
 				if(ant.getAlive() == true){
 
 					
-					if(ant.getCooldown() >= 0){
+					if(ant.getCooldown() > 0){
 						ant.setCooldown(ant.getCooldown() - 1);
 					} else {
 						//System.out.println(tick);
@@ -72,13 +74,11 @@ public class Match {
 								result = world.move(ant);
 								if (result) {
 									newInstructionNo = ((Move)instruction).getSt1();
-									
-									ant.setCooldown(14);
 								}
 								else{
 									newInstructionNo = ((Move)instruction).getSt2();
-									
 								}
+								
 								break;
 							case "Turn" :
 								String lr = ((Turn)instruction).getLr();
@@ -113,6 +113,7 @@ public class Match {
 								String cond = ((Sense)instruction).getCond();
 								markerNo = ((Sense)instruction).getI();
 								result = world.sense(ant, sensedir, cond, markerNo);
+								System.out.println(result);
 								if(result){
 									newInstructionNo = ((Sense)instruction).getSt1(); 
 								}
@@ -136,16 +137,16 @@ public class Match {
 						} else if(antBrainNo == 2) {
 							ant.setInstruction(blackBrain.getInstruction(newInstructionNo));
 						}
+						
 					}
 				}
+				
 			}
 			turn += 1;
 			
-			//DELETE - USED FOR DEV GUI
 			gui.updateCells(this);
-			gui.getPanel().repaint();
+	        gui.getPanel().repaint();
 	        gui.getPanel().revalidate();
-			
 		}
 		//Get winner
 		int redScore = world.getRedScore();

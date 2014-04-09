@@ -8,14 +8,17 @@ public class Brain {
 
 	private ArrayList<Instruction> instructions; //Need to initalise
 	
-	public Brain(String fileName) {
+	public Brain(String fileName) throws BrainCompilerException {
 		String line = "";
 		instructions = new ArrayList<Instruction>();
-
+		int lineNo = 0;
 		//Load file
 		BufferedReader file = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream (fileName)));
 		try {
 			while ((line = file.readLine()) != null) {
+				if (lineNo > 9999) {
+					throw new BrainCompilerException();
+				}
 				line = line.toLowerCase(); //Make lower case
 				line = line.split(";")[0]; //Remove comments
 				String[] strings = line.split(" ");
@@ -120,13 +123,14 @@ public class Brain {
 						}
 						break;
 					default :
-						System.out.println("error");
+						throw new BrainCompilerException();
 				}
+				lineNo++;
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		printBrain();
+		//printBrain();
 	}
 	
 	public Instruction getInstruction(int i) {
